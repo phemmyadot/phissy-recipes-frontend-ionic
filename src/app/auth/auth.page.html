@@ -1,0 +1,85 @@
+<ion-content>
+  <!-- 
+  <ion-grid>
+    <ion-row>
+      <ion-col size="10" offset="1">
+        <ion-item>
+          <ion-label position="floating">Username</ion-label>
+          <ion-input></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Password</ion-label>
+          <ion-input></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+ -->
+
+  <!-- Themes  register-flat-->
+  <ion-content>
+    <ion-grid class="ion-no-padding">
+      <!-- logo -->
+      <ion-row class="ion-align-items-start ion-align-items-stretch">
+        <ion-col style="display: flex; justify-content: center;" class="ion-margin-top">
+          <ion-avatar style="width: 100px; height: 100px;">
+            <img logo
+              src="https://www.globalsign.com/files/9314/6047/4058/What_Is_Certificate_Based_Authentication_and_Why_Should_I_Use_It..fw.png" />
+          </ion-avatar>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <!-- Reset your password button -->
+        <ion-col class="ion-no-padding ion-no-margin ion-margin-top ion-text-center" *ngIf="authError !== ''"
+          style="font-size: 11px;">
+          <ion-text color="danger">{{ authError }}</ion-text>
+        </ion-col>
+
+      </ion-row>
+      <ion-row class="ion-align-items-start ion-align-items-stretch">
+        <!-- Section form>-->
+        <ion-col col-md-6 offset-md-3>
+          <form class="ion-padding" [formGroup]="loginForm" (ngSubmit)="onLogin()">
+            <!-- Input-field -->
+            <ion-row>
+              <ion-col>
+                <div input-field class="ion-margin">
+                  <!-- Input-field-text -->
+                  <ion-item class="ion-no-padding">
+                    <ion-input type="text" formControlName="username" placeholder="Username"></ion-input>
+                    <!--               <ion-label no-margin *ngIf="!isUsernameValid">{{data.errorUser}}</ion-label>
+ -->
+                  </ion-item>
+                  <!-- Input-field-password -->
+                  <ion-item class="ion-no-padding">
+                    <ion-input type="password" formControlName="password" placeholder="Password"></ion-input>
+                    <!-- <ion-label no-margin *ngIf="!isPasswordValid">{{data.errorPassword}}</ion-label> -->
+                  </ion-item>
+                </div>
+                <!-- Login button -->
+                <ion-col>
+                  <ion-button full expand="block" class="ion-no-margin ion-padding-horizontal ion-text-uppercase"
+                    type="submit">Login
+                  </ion-button>
+                </ion-col>
+                <ion-col>
+                  <ion-button full fill="clear" expand="block"
+                    class="ion-no-margin ion-padding-horizontal ion-text-uppercase" type="submit">
+                    Forgot Password?
+                  </ion-button>
+                </ion-col>
+                <ion-col>
+                  <ion-button full fill="clear" expand="block"
+                    class="ion-no-margin ion-padding-horizontal ion-text-uppercase" type="submit"
+                    (click)="routeToSignup()">
+                    Don't have an account? Sign Up
+                  </ion-button>
+                </ion-col>
+              </ion-col>
+            </ion-row>
+          </form>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-content>
+</ion-content>

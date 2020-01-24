@@ -1,0 +1,42 @@
+<ion-app>
+  <app-header></app-header>
+  <ion-content>
+    <ion-menu side="start" menuId="userMenu" contentId="content">
+      <!-- <ion-header>
+        <ion-toolbar>
+          <ion-title>User Menu</ion-title>
+        </ion-toolbar>
+      </ion-header> -->
+      <ion-content>
+        <ion-list>
+          <ion-menu-toggle>
+            <ion-item lines="none" routerLink="/profile">
+              <ion-icon name="person" slot="start"></ion-icon>
+              <ion-label>Profile</ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+          <ion-menu-toggle>
+            <ion-item lines="none">
+              <ion-icon name="cart" slot="start"></ion-icon>
+              <ion-label>My Orders</ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+          <ion-menu-toggle>
+            <ion-item lines="none">
+              <ion-toggle slot="start"></ion-toggle>
+              <ion-label>Dark Mode</ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+          <ion-menu-toggle>
+            <ion-item lines="none" (click)="logout()" button>
+              <ion-icon name="exit" slot="start"></ion-icon>
+              <ion-label>Log Out</ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+        </ion-list>
+      </ion-content>
+    </ion-menu>
+    <ion-router-outlet id="content"></ion-router-outlet>
+    <app-tabs></app-tabs>
+  </ion-content>
+</ion-app>

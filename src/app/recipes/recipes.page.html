@@ -1,0 +1,51 @@
+<ion-content class="ion-padding-vertical">
+  <!-- <ion-fab vertical="top" horizontal="end" slot="fixed">
+    <ion-fab-button>
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab> -->
+
+  <!-- fab placed to the (vertical) center and end -->
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" (click)="onCreateRecipe()">
+    <ion-fab-button size="small" color="tertiary">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+  <ion-card *ngFor="let recipe of recipes">
+    <ion-card-header class="ion-no-padding" style="position: absolute; opacity: 0.8;width: 100%;">
+      <ion-item lines=" none" button routerLink="/profile">
+        <ion-avatar slot="start">
+          <img [src]="recipe.creator.imageUrl">
+        </ion-avatar>
+        <div>
+          <ion-label>{{ recipe.creator.userName }}</ion-label>
+          <ion-text class="recipe-post-time">{{ recipe.timeInterval }}</ion-text>
+        </div>
+      </ion-item>
+    </ion-card-header>
+    <ion-img routerLink="/recipes/detail" [src]="recipe.imageUrl">
+    </ion-img>
+    <ion-card-title class="ion-margin-horizontal ion-margin-top">{{ recipe.title }}</ion-card-title>
+    <ion-card-content>
+      <ion-text> {{ recipe.description }} </ion-text>
+      <div style="display: flex; justify-content: space-between;">
+        <div style="display: flex; justify-content: space-between;">
+          <ion-button fill="none">
+            <ion-icon name="chatbubbles" slot="start"></ion-icon>
+            <ion-label>{{ recipe.commentsCount }}</ion-label>
+          </ion-button>
+          <ion-button fill="none">
+            <ion-icon name="heart" slot="start"></ion-icon>
+            <ion-label>{{ recipe.likesCount }}</ion-label>
+          </ion-button>
+        </div>
+        <ion-button fill="outline" color="primary">
+          <ion-icon name="add" slot="end"></ion-icon>Save
+        </ion-button>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+
+
+</ion-content>
