@@ -6,6 +6,9 @@ import { RecipesService } from '../core/services/business/recipes/recipes.servic
 import { Recipe } from '../core/models/recipe';
 import { User } from '../core/models/user';
 import { AuthService } from '../core/services/misc/auth.service';
+import { Store, Select } from '@ngxs/store';
+import { Observable } from 'rxjs';
+import { AppState } from '../state/app.state';
 
 @Component({
   selector: 'app-recipes',
@@ -17,18 +20,31 @@ export class RecipesPage implements OnInit {
   recipes: Recipe[];
   totalRecipes: number;
 
+  @Select(AppState.getUserProfile) userProfile$: Observable<User>;
+
   constructor(
     private router: Router,
     private menu: MenuController,
     private modal: ModalController,
     private recipeService: RecipesService,
-    private authService: AuthService) { }
+    private authService: AuthService,
+    private store: Store) { }
 
   ngOnInit() {
-    this.recipeService.getRecipes().subscribe(data => {
-      this.recipes = data.recipes;
-      this.totalRecipes = data.totalRecipes;
-    });
+
+    this.userProfile$.subscribe(user => {
+
+      this.recipeService.getRecipes().subscribe(data => {
+        data.recipes.map(r => {
+          if (r.creator.displayName === user.displayName) {
+            r.creator.displayName = 'You';
+          }
+        });
+        this.recipes = data.recipes;
+        this.totalRecipes = data.totalRecipes;
+      });
+
+    })
   }
 
   openRecipeDetail() {
