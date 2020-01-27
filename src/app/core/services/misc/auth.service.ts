@@ -1,12 +1,11 @@
 import { Injectable } from '@angular/core';
-import { User } from '../../models/user';
-import { HttpHeaders, HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/internal/operators/map';
-import { Authentication } from '../../models/auth';
-import { environment } from 'src/environments/environment';
+import { environment } from '../../../../environments/environment';
 import { Router } from '@angular/router';
 import { Observable, of, Subject } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { Store } from '@ngxs/store';
+import { ClearUserData } from 'src/app/state/app.action';
 
 @Injectable({
   providedIn: 'root'
@@ -16,19 +15,26 @@ export class AuthService {
   showHeaderBol = new Subject<boolean>();
   imagePath: string;
 
-  constructor(private http: HttpClient, private router: Router) { }
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private store: Store) { }
 
   login(formData: any): Observable<any> {
-    // const body = new URLSearchParams();
-    // body.set('displayName', formData.displayName);
-    // body.set('password', formData.password);
     const graphqlQuery =
     {
       query: `{
           login(email: "${formData.email}", password: "${formData.password}")
         {
             token
-            userId
+            user {
+              _id
+              imageUrl
+              firstName
+              lastName
+              displayName
+              email
+            }
           }
         
         }
@@ -40,7 +46,6 @@ export class AuthService {
         map(response => {
           if (response) {
             localStorage.setItem('ACCESS_TOKEN', response.data.login.token);
-            localStorage.setItem('USER_ID', response.data.login.userId);
           }
           return response;
         })
@@ -51,6 +56,7 @@ export class AuthService {
     localStorage.removeItem('ACCESS_TOKEN');
     localStorage.removeItem('USER_ID');
     this.router.navigateByUrl('/auth');
+    this.store.dispatch(new ClearUserData());
   }
 
   isAuthenticated(): Observable<boolean> {

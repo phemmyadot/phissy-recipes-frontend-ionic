@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { AuthService } from '../core/services/misc/auth.service';
 import { Subject } from 'rxjs';
+import { Store } from '@ngxs/store';
+import { SetUserData } from '../state/app.action';
 
 @Component({
   selector: 'app-auth',
@@ -15,7 +17,7 @@ export class AuthPage implements OnInit {
   authErrors = [];
   authErrorsObs = new Subject<any>();
 
-  constructor(private authService: AuthService, private router: Router) { }
+  constructor(private authService: AuthService, private router: Router, private store: Store) { }
 
   ngOnInit() {
     this.loginForm = new FormGroup({
@@ -27,6 +29,7 @@ export class AuthPage implements OnInit {
   onLogin() {
     this.authService.login(this.loginForm.value).subscribe(res => {
       console.log('logged in', res);
+      this.store.dispatch(new SetUserData(res.data.login.user));
       this.loginForm.reset();
       this.router.navigateByUrl('/');
     }, err => {

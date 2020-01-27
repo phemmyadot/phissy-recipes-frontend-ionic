@@ -7,6 +7,8 @@ import { IonicModule } from '@ionic/angular';
 import { AuthPageRoutingModule } from './auth-routing.module';
 
 import { AuthPage } from './auth.page';
+import { NgxsModule } from '@ngxs/store';
+import { AppState } from '../state/app.state';
 
 @NgModule({
   imports: [
@@ -14,7 +16,8 @@ import { AuthPage } from './auth.page';
     FormsModule,
     ReactiveFormsModule,
     IonicModule,
-    AuthPageRoutingModule
+    AuthPageRoutingModule,
+    NgxsModule.forFeature([AppState])
   ],
   declarations: [AuthPage]
 })
