@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  baseUrl: 'http://localhost:8080/graphql'
+  baseUrl: 'http://localhost:8080/graphql',
+  imageUploadUrl: 'http://localhost:8080/post-image'
 };
 
 /*

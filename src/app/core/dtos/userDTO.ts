@@ -2,6 +2,6 @@ export class UserDTO {
     email: string;
     firstName: string;
     lastName: string;
-    username: string;
+    displayName: string;
     imageUrl: string;
 }

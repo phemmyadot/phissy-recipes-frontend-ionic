@@ -16,7 +16,6 @@ export class DetailPage implements OnInit {
 
   ionViewWillEnter() {
     this.authService.showHeader(false);
-    this.authService.showTabs(false);
   }
 
 }

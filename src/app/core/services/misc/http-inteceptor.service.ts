@@ -40,18 +40,6 @@ export class HttpInterceptorService implements HttpInterceptor {
 
             }
         }
-        return next.handle(changedRequest).toPromise().catch(err => {
-            // onError
-            console.log(err);
-            if (err instanceof HttpErrorResponse) {
-                err.error.errors.forEach(err => {
-                    if (err.status === 401) {
-                        this.auth.logout();
-                    }
-                });
-            }
-            return err;
-        }) as any;;
-
+        return next.handle(changedRequest).toPromise()
     }
 }

@@ -7,9 +7,6 @@ const routes: Routes = [
   {
     path: '',
     component: AuthPage
-  },  {
-    path: 'signup',
-    loadChildren: () => import('./signup/signup.module').then( m => m.SignupPageModule)
   }
 
 ];
@@ -18,4 +15,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class AuthPageRoutingModule {}
+export class AuthPageRoutingModule { }

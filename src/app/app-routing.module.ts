@@ -10,16 +10,6 @@ const routes: Routes = [
     canLoad: [AuthGuard]
   },
   {
-    path: 'food',
-    loadChildren: () => import('./food/food.module').then(m => m.FoodPageModule),
-    canLoad: [AuthGuard]
-  },
-  {
-    path: 'message',
-    loadChildren: () => import('./message/message.module').then(m => m.MessagePageModule),
-    canLoad: [AuthGuard]
-  },
-  {
     path: 'profile',
     loadChildren: () => import('./profile/profile.module').then(m => m.ProfilePageModule),
     canLoad: [AuthGuard]
@@ -27,6 +17,10 @@ const routes: Routes = [
   {
     path: 'auth',
     loadChildren: () => import('./auth/auth.module').then(m => m.AuthPageModule)
+  },
+  {
+    path: 'signup',
+    loadChildren: () => import('./auth/signup/signup.module').then(m => m.SignupPageModule)
   },
 
 

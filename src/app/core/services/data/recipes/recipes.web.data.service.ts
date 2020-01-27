@@ -30,13 +30,12 @@ export class RecipesWebDataService {
                         title
                         description
                         imageUrl
-                        category
                         likes
                         comments
                         createdAt
                         updatedAt
                         creator {
-                            userName
+                            displayName
                             imageUrl
                         }
                     }
@@ -71,9 +70,6 @@ export class RecipesWebDataService {
                     .forMember("imageUrl", function (opts) {
                         opts.mapFrom("imageUrl")
                     })
-                    .forMember("category", function (opts) {
-                        opts.mapFrom("category")
-                    })
                     .forMember("likes", function (opts) {
                         opts.mapFrom("likes")
                     })
@@ -96,6 +92,7 @@ export class RecipesWebDataService {
                     recipe.timeInterval = moment(moment(recipe.updatedAt).toDate()).fromNow();
                     recipe.likesCount = recipe.likes.length;
                     recipe.commentsCount = recipe.comments.length;
+                    recipe.descriptionPreview = `${recipe.description.slice(0, 100)}...`;
                 })
                 recipesData.recipes = recipes;
 

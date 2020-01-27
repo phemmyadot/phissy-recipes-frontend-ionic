@@ -8,8 +8,8 @@ export class Recipe {
     _id: string;
     title: string;
     description: string;
+    descriptionPreview: string;
     imageUrl: string;
-    category: string;
     likes: any[];
     comments: any[];
     likesCount: number;

@@ -2,6 +2,6 @@ export class User {
     email: string;
     firstName: string;
     lastName: string;
-    username: string;
+    displayName: string;
     imageUrl: string;
 }

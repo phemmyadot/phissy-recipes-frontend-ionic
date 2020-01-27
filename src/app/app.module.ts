@@ -19,13 +19,14 @@ import { HttpInterceptorService } from './core/services/misc/http-inteceptor.ser
 import { DateService } from './core/services/misc/date.service';
 import { HeaderComponent } from './shared/header/header.component';
 import { AuthService } from './core/services/misc/auth.service';
-import { TabsComponent } from './shared/tabs/tabs.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { ErrorInterceptorService } from './core/services/misc/error-interceptor.service';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
-    TabsComponent],
+  ],
   entryComponents: [],
   imports: [
     BrowserModule,
@@ -35,7 +36,8 @@ import { TabsComponent } from './shared/tabs/tabs.component';
     NgxsStoragePluginModule.forRoot({}),
     NgxsReduxDevtoolsPluginModule.forRoot(),
     NgxsLoggerPluginModule.forRoot(),
-    HttpClientModule
+    HttpClientModule,
+    ReactiveFormsModule
   ],
   providers: [
     StatusBar,
@@ -43,7 +45,8 @@ import { TabsComponent } from './shared/tabs/tabs.component';
     DateService,
     AuthService,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    { provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptorService, multi: true }
   ],
   bootstrap: [AppComponent]
 })

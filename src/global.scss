@@ -26,8 +26,6 @@
 @import "~@ionic/angular/css/flex-utils.css";
 
 
-
-
 // TOOLBAR
 .profile-icon {
     width: 100%;
@@ -38,4 +36,11 @@
 //RECIPE
 .recipe-post-time {
     font-size: 12px;
+}
+
+//CARD
+ion-card-title {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
 }

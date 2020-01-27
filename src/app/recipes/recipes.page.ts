@@ -38,7 +38,6 @@ export class RecipesPage implements OnInit {
 
   ionViewWillEnter() {
     this.authService.showHeader(true);
-    this.authService.showTabs(true);
   }
 
   routeToProfile() {
