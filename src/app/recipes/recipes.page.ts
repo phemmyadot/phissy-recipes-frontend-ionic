@@ -44,7 +44,10 @@ export class RecipesPage implements OnInit {
 
 
   ionViewWillEnter() {
-
+    this.store.dispatch(new GetRecipes());
+    this.totalRecipes$.subscribe(total => {
+      this.totalRecipes = total;
+    });
     this.authService.showHeader(true);
   }
 

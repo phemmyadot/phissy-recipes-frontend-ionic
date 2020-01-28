@@ -45,11 +45,21 @@ export class DetailPage implements OnInit {
   }
 
   ionViewWillEnter() {
+    this.route.params.subscribe(params => {
+      this.store.dispatch(new GetRecipe(params.id));
+      console.log(params.id);
+      this.recipeId = params.id;
+      this.recipe$.subscribe(recipe => {
+        // this.recipe = recipe;
+        console.log(recipe);
+        this.creator = recipe.creator;
+      });
+    });
     this.authService.showHeader(false);
   }
 
   ionViewDidLeave() {
-    // this.store.dispatch(new ClearRecipe());
+    this.store.dispatch(new ClearRecipe());
   }
 
 }
