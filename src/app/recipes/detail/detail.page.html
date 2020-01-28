@@ -11,9 +11,38 @@
   <ion-grid>
     <ion-row>
       <ion-col>
-        <ion-title>
-          Detail Page
-        </ion-title>
+        <img class="image" [src]="(recipe$ | async).imageUrl">
+      </ion-col>
+    </ion-row>
+    <ion-row class="ion-margin-vertical">
+      <ion-col>
+        <ion-label style="font-size: 18px;" color="primary">{{(recipe$ | async).title}}</ion-label>
+      </ion-col>
+    </ion-row>
+    <ion-row style="font-size: 12px;">
+      <ion-col>
+        <ion-label>{{(recipe$ | async).likesCount}} Likes</ion-label>
+      </ion-col>
+    </ion-row>
+    <ion-row style="font-size: 12px;">
+      <ion-col>
+        <ion-label>{{(recipe$ | async).commentsCount}} Comments</ion-label>
+      </ion-col>
+    </ion-row>
+    <ion-row style="font-size: 12px;">
+      <ion-col>
+        <ion-label>Posted by <a (click)="openCreator()">{{(recipe$ | async).creator.displayName}}</a>
+        </ion-label>
+      </ion-col>
+    </ion-row>
+    <ion-row style="font-size: 12px;">
+      <ion-col>
+        <ion-label>Posted {{(recipe$ | async).timeInterval}}</ion-label>
+      </ion-col>
+    </ion-row>
+    <ion-row style="font-size: 14px;" class="ion-margin-vertical">
+      <ion-col>
+        <ion-label>{{(recipe$ | async).description}}</ion-label>
       </ion-col>
     </ion-row>
   </ion-grid>

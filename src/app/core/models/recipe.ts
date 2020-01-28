@@ -5,7 +5,7 @@ export class RecipeData {
     totalRecipes: number;
 }
 export class Recipe {
-    _id: string;
+    id: string;
     title: string;
     description: string;
     descriptionPreview: string;

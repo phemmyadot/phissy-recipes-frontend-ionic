@@ -38,8 +38,8 @@ export class RecipesPage implements OnInit {
   }
 
 
-  openRecipeDetail() {
-    this.router.navigateByUrl('/recipes/detail');
+  openRecipeDetail(id) {
+    this.router.navigate(['recipes', 'detail', id]);
   }
 
 
@@ -48,9 +48,6 @@ export class RecipesPage implements OnInit {
     this.authService.showHeader(true);
   }
 
-  routeToProfile() {
-    this.router.navigateByUrl('/profile');
-  }
 
   onCreateRecipe() {
     this.modal.create({ component: CreateRecipeComponent }).then(modalEl => {

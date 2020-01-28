@@ -5,7 +5,8 @@ export class RecipeResDTO {
 }
 
 export class RecipeDataDTO {
-    recipes: RecipeDTO[];
+    recipes?: RecipeDTO[];
+    recipe?: RecipeDTO;
     totalRecipes: number;
 }
 export class RecipeDTO {

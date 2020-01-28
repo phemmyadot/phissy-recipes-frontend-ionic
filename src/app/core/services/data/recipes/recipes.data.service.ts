@@ -7,6 +7,7 @@ import { Recipe, RecipeData } from 'src/app/core/models/recipe';
 })
 export abstract class RecipesDataService {
 
+    abstract getRecipe(recipeId: string): Observable<Recipe>;
     abstract getRecipes(): Observable<RecipeData>;
     abstract createRecipe(formData: any, Media: File): Observable<Recipe>;
 }

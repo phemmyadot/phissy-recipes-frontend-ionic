@@ -14,6 +14,10 @@ export class RecipesService {
     return this.recipeDataService.getRecipes();
   }
 
+  getRecipe(recipeId: string): Observable<Recipe> {
+    return this.recipeDataService.getRecipe(recipeId);
+  }
+
   createRecipe(formData: any, Media: File): Observable<Recipe> {
     return this.recipeDataService.createRecipe(formData, Media);
   }

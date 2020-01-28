@@ -27,7 +27,8 @@
               </div>
             </ion-item>
           </ion-card-header>
-          <ion-img routerLink="/recipes/detail" [src]="recipe.imageUrl" style="height: 200px;object-fit: cover;">
+          <ion-img (click)="openRecipeDetail(recipe.id)" [src]="recipe.imageUrl"
+            style="height: 200px;object-fit: cover;">
           </ion-img>
           <ion-card-title class="ion-margin-horizontal ion-margin-top">{{ recipe.title }}</ion-card-title>
           <ion-card-content>

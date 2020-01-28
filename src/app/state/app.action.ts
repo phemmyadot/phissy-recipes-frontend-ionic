@@ -11,6 +11,12 @@ export class ClearUserData {
     static readonly type = '[App] ClearUserData';
 }
 
+export class GetRecipe {
+    static readonly type = '[App] GetRecipe';
+
+    constructor(public recipeId: string) { }
+}
+
 export class GetRecipes {
     static readonly type = '[App] GetRecipes';
 }

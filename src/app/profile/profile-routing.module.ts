@@ -4,8 +4,12 @@ import { Routes, RouterModule } from '@angular/router';
 import { ProfilePage } from './profile.page';
 
 const routes: Routes = [
+  // {
+  //   path: '',
+  //   component: ProfilePage
+  // },
   {
-    path: '',
+    path: 'info/:id',
     component: ProfilePage
   }
 ];
@@ -14,4 +18,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class ProfilePageRoutingModule {}
+export class ProfilePageRoutingModule { }

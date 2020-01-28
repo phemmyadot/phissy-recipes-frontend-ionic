@@ -5,6 +5,10 @@ import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { AuthService } from './core/services/misc/auth.service';
 import { Router } from '@angular/router';
+import { Select } from '@ngxs/store';
+import { AppState } from './state/app.state';
+import { Observable } from 'rxjs';
+import { User } from './core/models/user';
 
 @Component({
   selector: 'app-root',
@@ -13,6 +17,9 @@ import { Router } from '@angular/router';
 })
 export class AppComponent implements OnInit {
 
+  @Select(AppState.getUserProfile) user$: Observable<User>;
+
+  user: User;
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
@@ -25,7 +32,9 @@ export class AppComponent implements OnInit {
 
 
   ngOnInit() {
-
+    this.user$.subscribe(user => {
+      this.user = user;
+    })
   }
 
   initializeApp() {
@@ -39,4 +48,7 @@ export class AppComponent implements OnInit {
     this.authService.logout();
   }
 
+  openProfile() {
+    this.router.navigate(['profile', 'info', this.user._id]);
+  }
 }

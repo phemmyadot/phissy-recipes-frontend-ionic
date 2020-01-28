@@ -23,6 +23,69 @@ export class RecipesWebDataService {
     }
 
 
+    getRecipe(recipeID: string): Observable<Recipe> {
+        const graphqlQuery = {
+            query: `{
+                recipe(id: "${recipeID}") {
+                        _id
+                        title
+                        description
+                        imageUrl
+                        likes
+                        comments
+                        createdAt
+                        updatedAt
+                        creator {
+                            displayName
+                            imageUrl
+                            _id
+                        }
+                }
+            }
+          `};
+        return this.httpClient.post<RecipeResDTO>(environment.baseUrl, graphqlQuery)
+            .pipe(map(response => {
+                automapper
+                    .createMap(RecipeDTO, Recipe)
+                    .forMember("id", function (opts) {
+                        opts.mapFrom("_id")
+                    })
+                    .forMember("title", function (opts) {
+                        opts.mapFrom("title")
+                    })
+                    .forMember("description", function (opts) {
+                        opts.mapFrom("description")
+                    })
+                    .forMember("imageUrl", function (opts) {
+                        opts.mapFrom("imageUrl")
+                    })
+                    .forMember("likes", function (opts) {
+                        opts.mapFrom("likes")
+                    })
+                    .forMember("comments", function (opts) {
+                        opts.mapFrom("comments")
+                    })
+                    .forMember("createdAt", function (opts) {
+                        opts.mapFrom("createdAt")
+                    })
+                    .forMember("updatedAt", function (opts) {
+                        opts.mapFrom("updatedAt")
+                    })
+                    .forMember("creator", function (opts) {
+                        opts.mapFrom("creator")
+                    });
+                const recipe: Recipe = automapper.map(RecipeDTO, Recipe, response.data.recipe);
+
+                recipe.createdAtToString = this.dateService.formatToFullDate(moment(recipe.createdAt).toDate());
+                recipe.updatedAtToString = this.dateService.formatToFullDate(moment(recipe.updatedAt).toDate());
+                recipe.timeInterval = moment(moment(recipe.updatedAt).toDate()).fromNow();
+                recipe.likesCount = recipe.likes.length;
+                recipe.commentsCount = recipe.comments.length;
+
+                return recipe;
+            }));
+    }
+
     getRecipes(): Observable<RecipeData> {
 
         const graphqlQuery = {

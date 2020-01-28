@@ -1,5 +1,5 @@
 import { State, Action, StateContext, Selector } from '@ngxs/store';
-import { SetUserData, ClearUserData, GetRecipes, CreateRecipe } from './app.action';
+import { SetUserData, ClearUserData, GetRecipes, CreateRecipe, GetRecipe } from './app.action';
 import { User } from '../core/models/user';
 import { RecipesService } from '../core/services/business/recipes/recipes.service';
 import { Recipe } from '../core/models/recipe';
@@ -8,6 +8,7 @@ import { ModalController } from '@ionic/angular';
 export class AppStateModel {
     userProfile: User;
     recipes: Recipe[];
+    currentRecipe: Recipe;
     totalRecipes: number;
 }
 
@@ -17,6 +18,7 @@ export class AppStateModel {
         userProfile: null,
         recipes: [],
         totalRecipes: 0,
+        currentRecipe: null
     }
 })
 
@@ -37,6 +39,11 @@ export class AppState {
     @Selector()
     static getRecipes(state: AppStateModel) {
         return state.recipes;
+    }
+
+    @Selector()
+    static getRecipe(state: AppStateModel) {
+        return state.currentRecipe;
     }
 
     @Selector()
@@ -62,6 +69,19 @@ export class AppState {
         });
     }
 
+    @Action(GetRecipe)
+    getRecipe(ctx: StateContext<AppStateModel>, { recipeId }: GetRecipe) {
+        const state = ctx.getState();
+
+        this.recipeService.getRecipe(recipeId).subscribe(data => {
+            ctx.setState({
+                ...state,
+                currentRecipe: data,
+            });
+        });
+
+    }
+
     @Action(GetRecipes)
     getRecipes(ctx: StateContext<AppStateModel>, { }: GetRecipes) {
         const state = ctx.getState();
@@ -83,12 +103,9 @@ export class AppState {
 
     @Action(CreateRecipe)
     createRecipe(ctx: StateContext<AppStateModel>, { recipeForm, image }: CreateRecipe) {
-        const state = ctx.getState();
-
         this.recipeService.createRecipe(recipeForm, image).subscribe(recipe => {
             console.log(recipe);
             ctx.dispatch(new GetRecipes()).toPromise().then(res => {
-
                 this.modal.dismiss();
             });
         });
