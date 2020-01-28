@@ -31,11 +31,11 @@ export class DetailPage implements OnInit, OnDestroy {
     private modal: ModalController, ) { }
 
   ngOnInit() {
-    // this.route.params.subscribe(params => {
-    //   this.store.dispatch(new GetRecipe(params.id));
-    //   console.log(params.id);
-    //   this.recipeId = params.id;
-    // });
+     this.route.params.subscribe(params => {
+       this.store.dispatch(new GetRecipe(params.id));
+       console.log(params.id);
+       this.recipeId = params.id;
+     });
 
 
   }
