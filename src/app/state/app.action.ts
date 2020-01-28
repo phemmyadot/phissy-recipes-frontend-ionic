@@ -17,8 +17,17 @@ export class GetRecipe {
     constructor(public recipeId: string) { }
 }
 
+export class ClearRecipe {
+    static readonly type = '[App] ClearRecipe';
+}
+
 export class GetRecipes {
     static readonly type = '[App] GetRecipes';
+}
+
+
+export class ClearRecipes {
+    static readonly type = '[App] ClearRecipes';
 }
 
 export class CreateRecipe {

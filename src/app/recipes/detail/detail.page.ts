@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/core/services/misc/auth.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Store, Select } from '@ngxs/store';
-import { GetRecipe } from 'src/app/state/app.action';
+import { GetRecipe, ClearRecipe } from 'src/app/state/app.action';
 import { AppState } from 'src/app/state/app.state';
 import { Observable } from 'rxjs';
 import { Recipe } from 'src/app/core/models/recipe';
@@ -27,14 +27,14 @@ export class DetailPage implements OnInit {
 
   ngOnInit() {
     this.route.params.subscribe(params => {
+      this.store.dispatch(new GetRecipe(params.id));
       console.log(params.id);
       this.recipeId = params.id;
-      this.store.dispatch(new GetRecipe(params.id));
       this.recipe$.subscribe(recipe => {
         // this.recipe = recipe;
         console.log(recipe);
         this.creator = recipe.creator;
-      })
+      });
     });
 
 
@@ -46,6 +46,10 @@ export class DetailPage implements OnInit {
 
   ionViewWillEnter() {
     this.authService.showHeader(false);
+  }
+
+  ionViewDidLeave() {
+    // this.store.dispatch(new ClearRecipe());
   }
 
 }

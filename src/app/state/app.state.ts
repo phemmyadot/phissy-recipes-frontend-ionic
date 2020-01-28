@@ -1,9 +1,10 @@
 import { State, Action, StateContext, Selector } from '@ngxs/store';
-import { SetUserData, ClearUserData, GetRecipes, CreateRecipe, GetRecipe } from './app.action';
+import { SetUserData, ClearUserData, GetRecipes, CreateRecipe, GetRecipe, ClearRecipe, ClearRecipes } from './app.action';
 import { User } from '../core/models/user';
 import { RecipesService } from '../core/services/business/recipes/recipes.service';
 import { Recipe } from '../core/models/recipe';
 import { ModalController } from '@ionic/angular';
+import { map } from 'rxjs/operators';
 
 export class AppStateModel {
     userProfile: User;
@@ -73,20 +74,29 @@ export class AppState {
     getRecipe(ctx: StateContext<AppStateModel>, { recipeId }: GetRecipe) {
         const state = ctx.getState();
 
-        this.recipeService.getRecipe(recipeId).subscribe(data => {
+        return this.recipeService.getRecipe(recipeId).pipe(map(data => {
             ctx.setState({
                 ...state,
                 currentRecipe: data,
             });
-        });
+        }));
 
+    }
+
+    @Action(ClearRecipe)
+    clearRecipe(ctx: StateContext<AppStateModel>, { }: ClearRecipe) {
+        const state = ctx.getState();
+        ctx.setState({
+            ...state,
+            currentRecipe: null
+        });
     }
 
     @Action(GetRecipes)
     getRecipes(ctx: StateContext<AppStateModel>, { }: GetRecipes) {
         const state = ctx.getState();
 
-        this.recipeService.getRecipes().subscribe(data => {
+        return this.recipeService.getRecipes().pipe(map(data => {
             data.recipes.map(r => {
                 if (r.creator.displayName === state.userProfile.displayName) {
                     r.creator.displayName = 'You';
@@ -97,18 +107,27 @@ export class AppState {
                 recipes: data.recipes,
                 totalRecipes: data.totalRecipes
             });
-        });
+        }));
 
+    }
+
+    @Action(ClearRecipes)
+    clearRecipes(ctx: StateContext<AppStateModel>, { }: ClearRecipes) {
+        const state = ctx.getState();
+        ctx.setState({
+            ...state,
+            recipes: []
+        });
     }
 
     @Action(CreateRecipe)
     createRecipe(ctx: StateContext<AppStateModel>, { recipeForm, image }: CreateRecipe) {
-        this.recipeService.createRecipe(recipeForm, image).subscribe(recipe => {
+        return this.recipeService.createRecipe(recipeForm, image).pipe(map(recipe => {
             console.log(recipe);
             ctx.dispatch(new GetRecipes()).toPromise().then(res => {
                 this.modal.dismiss();
             });
-        });
+        }));
 
     }
 } 

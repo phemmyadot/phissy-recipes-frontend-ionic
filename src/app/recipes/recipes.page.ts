@@ -8,7 +8,7 @@ import { AuthService } from '../core/services/misc/auth.service';
 import { Store, Select } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { AppState } from '../state/app.state';
-import { GetRecipes } from '../state/app.action';
+import { GetRecipes, ClearRecipes } from '../state/app.action';
 
 @Component({
   selector: 'app-recipes',
@@ -53,6 +53,11 @@ export class RecipesPage implements OnInit {
     this.modal.create({ component: CreateRecipeComponent }).then(modalEl => {
       modalEl.present();
     });
+  }
+
+
+  ionViewDidLeave() {
+    this.store.dispatch(new ClearRecipes());
   }
 
 }
