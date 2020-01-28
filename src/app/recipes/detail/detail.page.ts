@@ -7,6 +7,7 @@ import { AppState } from 'src/app/state/app.state';
 import { Observable } from 'rxjs';
 import { Recipe } from 'src/app/core/models/recipe';
 import { User } from 'src/app/core/models/user';
+import { RecipesService } from 'src/app/core/services/business/recipes/recipes.service';
 
 @Component({
   selector: 'app-detail',
@@ -23,7 +24,8 @@ export class DetailPage implements OnInit, OnDestroy {
   constructor(private authService: AuthService,
     private route: ActivatedRoute,
     private store: Store,
-    private router: Router) { }
+    private router: Router,
+    private recipeService: RecipesService) { }
 
   ngOnInit() {
     // this.route.params.subscribe(params => {
@@ -45,7 +47,7 @@ export class DetailPage implements OnInit, OnDestroy {
       console.log(params.id);
       this.recipeId = params.id;
       this.recipe$.subscribe(recipe => {
-        // this.recipe = recipe;
+        this.recipe = recipe;
         console.log(recipe);
         this.creator = recipe.creator;
       });
@@ -53,8 +55,20 @@ export class DetailPage implements OnInit, OnDestroy {
     this.authService.showHeader(false);
   }
 
-  // ngOnDestroy() {
-  //   this.store.dispatch(new ClearRecipe());
-  // }
+  ngOnDestroy() {
+    // this.store.dispatch(new ClearRecipe());
+  }
+
+  onDelete() {
+    this.recipeService.deleteRecipe(this.recipe.id).subscribe(isDeleted => {
+      if (isDeleted) {
+        this.router.navigate(['recipes']);
+      }
+    });
+  }
+
+  onEdit() {
+
+  }
 
 }

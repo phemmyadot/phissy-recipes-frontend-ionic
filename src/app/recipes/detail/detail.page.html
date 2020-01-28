@@ -11,36 +11,52 @@
   <ion-grid>
     <ion-row>
       <ion-col>
-        <img class="image" [src]="(recipe$ | async).imageUrl">
+        <img class="image" [src]="(recipe$ | async).imageUrl" style="box-shadow: 0px 0px 8px -3px #800080">
       </ion-col>
     </ion-row>
-    <ion-row class="ion-margin-vertical">
+    <ion-row class="ion-margin">
       <ion-col>
         <ion-label style="font-size: 18px;" color="primary">{{(recipe$ | async).title}}</ion-label>
       </ion-col>
     </ion-row>
-    <ion-row style="font-size: 12px;">
+    <ion-row class="ion-margin-horizontal">
       <ion-col>
-        <ion-label>{{(recipe$ | async).likesCount}} Likes</ion-label>
+        <ion-row style="font-size: 12px;">
+          <ion-col>
+            <ion-label>{{(recipe$ | async).likesCount}} Likes</ion-label>
+          </ion-col>
+        </ion-row>
+        <ion-row style="font-size: 12px;">
+          <ion-col>
+            <ion-label>{{(recipe$ | async).commentsCount}} Comments</ion-label>
+          </ion-col>
+        </ion-row>
+        <ion-row style="font-size: 12px;">
+          <ion-col>
+            <ion-label>Posted by <a (click)="openCreator()">{{(recipe$ | async).creator.displayName}}</a>
+            </ion-label>
+          </ion-col>
+        </ion-row>
+        <ion-row style="font-size: 12px;">
+          <ion-col>
+            <ion-label>Posted {{(recipe$ | async).timeInterval}}</ion-label>
+          </ion-col>
+        </ion-row>
+      </ion-col>
+      <ion-col style="display: flex;justify-content: flex-end;">
+        <ion-button color="danger" fill="outline" style="box-shadow: 0px 0px 8px -3px #800080" size="small"
+          (click)="onDelete()">
+          <ion-icon name="trash"></ion-icon>
+        </ion-button>
+        <ion-button color="primary" fill="outline" style="box-shadow: 0px 0px 8px -3px #800080" size="small"
+          (click)="onEdit()">
+          <ion-icon name="create">
+          </ion-icon>
+        </ion-button>
       </ion-col>
     </ion-row>
-    <ion-row style="font-size: 12px;">
-      <ion-col>
-        <ion-label>{{(recipe$ | async).commentsCount}} Comments</ion-label>
-      </ion-col>
-    </ion-row>
-    <ion-row style="font-size: 12px;">
-      <ion-col>
-        <ion-label>Posted by <a (click)="openCreator()">{{(recipe$ | async).creator.displayName}}</a>
-        </ion-label>
-      </ion-col>
-    </ion-row>
-    <ion-row style="font-size: 12px;">
-      <ion-col>
-        <ion-label>Posted {{(recipe$ | async).timeInterval}}</ion-label>
-      </ion-col>
-    </ion-row>
-    <ion-row style="font-size: 14px;" class="ion-margin-vertical">
+
+    <ion-row style="font-size: 14px;" class="ion-margin">
       <ion-col>
         <ion-label>{{(recipe$ | async).description}}</ion-label>
       </ion-col>

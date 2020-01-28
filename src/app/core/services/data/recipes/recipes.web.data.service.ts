@@ -241,4 +241,17 @@ export class RecipesWebDataService {
         );
 
     }
+
+    deleteRecipe(recipeId: string): Observable<boolean> {
+
+        const graphqlQuery =
+        {
+            query: `
+                mutation {
+                    deleteRecipe(id: "${recipeId}")
+                }`
+        }
+
+        return this.httpClient.post<boolean>(environment.baseUrl, graphqlQuery);
+    }
 }

@@ -21,4 +21,8 @@ export class RecipesService {
   createRecipe(formData: any, Media: File): Observable<Recipe> {
     return this.recipeDataService.createRecipe(formData, Media);
   }
+
+  deleteRecipe(recipeId: string): Observable<boolean> {
+    return this.recipeDataService.deleteRecipe(recipeId);
+  }
 }
