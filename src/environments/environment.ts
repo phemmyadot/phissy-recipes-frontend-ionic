@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-  baseUrl: 'http://localhost:8080/graphql',
-  imageUploadUrl: 'http://localhost:8080/post-image'
+  baseUrl: 'https://phissy-node-app.herokuapp.com/graphql',
+  imageUploadUrl: 'https://phissy-node-app.herokuapp.com/post-image'
 };
 
 /*
