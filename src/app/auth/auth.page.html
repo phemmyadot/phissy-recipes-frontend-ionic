@@ -10,7 +10,7 @@
         </ion-col>
       </ion-row>
       <ion-row>
-        <ion-col class="ion-no-padding ion-no-margin ion-margin-top ion-text-center" *ngIf="authError !== ''"
+        <ion-col class="ion-no-padding ion-no-margin ion-margin-top ion-text-center" *ngIf="authErrors.length !== 0"
           style="font-size: 11px;">
           <div *ngFor="let err of authErrors">
             <ion-text color="danger">{{ err.message }}</ion-text>
