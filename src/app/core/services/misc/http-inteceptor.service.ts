@@ -46,6 +46,6 @@ export class HttpInterceptorService implements HttpInterceptor {
 
             }
         }
-        return next.handle(changedRequest).toPromise()
+        return next.handle(changedRequest).toPromise();
     }
 }

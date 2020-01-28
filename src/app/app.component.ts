@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 
-import { Platform, MenuController } from '@ionic/angular';
+import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { AuthService } from './core/services/misc/auth.service';
 import { Router } from '@angular/router';
-import { Observable, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-root',
