@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AuthService } from 'src/app/core/services/misc/auth.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Store, Select } from '@ngxs/store';
@@ -13,7 +13,7 @@ import { User } from 'src/app/core/models/user';
   templateUrl: './detail.page.html',
   styleUrls: ['./detail.page.scss'],
 })
-export class DetailPage implements OnInit {
+export class DetailPage implements OnInit, OnDestroy {
 
   @Select(AppState.getRecipe) recipe$: Observable<Recipe>;
 
@@ -26,16 +26,11 @@ export class DetailPage implements OnInit {
     private router: Router) { }
 
   ngOnInit() {
-    this.route.params.subscribe(params => {
-      this.store.dispatch(new GetRecipe(params.id));
-      console.log(params.id);
-      this.recipeId = params.id;
-      this.recipe$.subscribe(recipe => {
-        // this.recipe = recipe;
-        console.log(recipe);
-        this.creator = recipe.creator;
-      });
-    });
+    // this.route.params.subscribe(params => {
+    //   this.store.dispatch(new GetRecipe(params.id));
+    //   console.log(params.id);
+    //   this.recipeId = params.id;
+    // });
 
 
   }
@@ -58,8 +53,8 @@ export class DetailPage implements OnInit {
     this.authService.showHeader(false);
   }
 
-  ionViewDidLeave() {
-    this.store.dispatch(new ClearRecipe());
-  }
+  // ngOnDestroy() {
+  //   this.store.dispatch(new ClearRecipe());
+  // }
 
 }

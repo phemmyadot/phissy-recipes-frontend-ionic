@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { CreateRecipeComponent } from './create/create.component';
@@ -15,7 +15,7 @@ import { GetRecipes, ClearRecipes } from '../state/app.action';
   templateUrl: './recipes.page.html',
   styleUrls: ['./recipes.page.scss'],
 })
-export class RecipesPage implements OnInit {
+export class RecipesPage implements OnInit, OnDestroy {
 
   recipes: Observable<Recipe[]>;
   totalRecipes: number;
@@ -31,10 +31,10 @@ export class RecipesPage implements OnInit {
     private store: Store) { }
 
   ngOnInit() {
-    this.store.dispatch(new GetRecipes());
-    this.totalRecipes$.subscribe(total => {
-      this.totalRecipes = total;
-    });
+    // this.store.dispatch(new GetRecipes());
+    // this.totalRecipes$.subscribe(total => {
+    //   this.totalRecipes = total;
+    // });
   }
 
 
@@ -59,7 +59,7 @@ export class RecipesPage implements OnInit {
   }
 
 
-  ionViewDidLeave() {
+  ngOnDestroy() {
     this.store.dispatch(new ClearRecipes());
   }
 
