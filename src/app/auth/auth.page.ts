@@ -20,6 +20,11 @@ export class AuthPage implements OnInit {
   constructor(private authService: AuthService, private router: Router, private store: Store) { }
 
   ngOnInit() {
+    this.authService.isAuthenticated().subscribe(isAuth => {
+      if (isAuth) {
+        this.router.navigateByUrl('/recipes');
+      }
+    });
     this.loginForm = new FormGroup({
       email: new FormControl('', [Validators.required, Validators.email]),
       password: new FormControl('', [Validators.required, Validators.minLength(6)])

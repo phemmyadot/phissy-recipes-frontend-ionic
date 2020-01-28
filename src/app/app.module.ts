@@ -21,6 +21,9 @@ import { HeaderComponent } from './shared/header/header.component';
 import { AuthService } from './core/services/misc/auth.service';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ErrorInterceptorService } from './core/services/misc/error-interceptor.service';
+import { RecipesService } from './core/services/business/recipes/recipes.service';
+import { RecipesDataService } from './core/services/data/recipes/recipes.data.service';
+import { RecipesWebDataService } from './core/services/data/recipes/recipes.web.data.service';
 
 @NgModule({
   declarations: [
@@ -43,7 +46,9 @@ import { ErrorInterceptorService } from './core/services/misc/error-interceptor.
     StatusBar,
     SplashScreen,
     DateService,
+    RecipesService,
     AuthService,
+    { provide: RecipesDataService, useClass: RecipesWebDataService },
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     { provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptorService, multi: true }

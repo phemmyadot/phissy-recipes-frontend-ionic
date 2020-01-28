@@ -1,9 +1,9 @@
 <ion-header *ngIf="showHeader | async">
   <ion-toolbar color="primary">
-    <ion-title>Logo</ion-title>
+    <ion-title>Phissy!</ion-title>
     <ion-buttons slot="end">
       <ion-avatar (click)="openSideMenu()" class="ion-padding">
-        <img [src]="user.imageUrl">
+        <img [src]="user?.imageUrl">
         <ion-ripple-effect type="unbounded"></ion-ripple-effect>
       </ion-avatar>
     </ion-buttons>

@@ -13,4 +13,8 @@ export class RecipesService {
   getRecipes(): Observable<RecipeData> {
     return this.recipeDataService.getRecipes();
   }
+
+  createRecipe(formData: any, Media: File): Observable<Recipe> {
+    return this.recipeDataService.createRecipe(formData, Media);
+  }
 }

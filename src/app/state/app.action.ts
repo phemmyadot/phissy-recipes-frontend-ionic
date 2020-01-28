@@ -1,4 +1,5 @@
 import { User } from '../core/models/user';
+import { Recipe } from '../core/models/recipe';
 
 export class SetUserData {
     static readonly type = '[App] SetUserData';
@@ -8,4 +9,14 @@ export class SetUserData {
 
 export class ClearUserData {
     static readonly type = '[App] ClearUserData';
+}
+
+export class GetRecipes {
+    static readonly type = '[App] GetRecipes';
+}
+
+export class CreateRecipe {
+    static readonly type = '[App] CreateRecipe';
+
+    constructor(public recipeForm: any, public image: any) { }
 }

@@ -21,7 +21,13 @@ export class HttpInterceptorService implements HttpInterceptor {
 
     private async processInterceptor(req: HttpRequest<any>, next: HttpHandler): Promise<HttpEvent<any>> {
         let changedRequest: HttpRequest<any> = req;
-        if (!req.url.includes('auth') || !req.url.includes('signup')) {
+        if (req.url.includes('post-image')) {
+            return next.handle(req).toPromise();
+        }
+        if (
+            !req.url.includes('auth') ||
+            !req.url.includes('signup')
+        ) {
             const token = this.auth.getAccessToken();
             if (token) {
                 if (req.method === 'GET') { // for IE

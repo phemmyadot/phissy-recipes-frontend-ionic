@@ -1,24 +1,47 @@
 import { State, Action, StateContext, Selector } from '@ngxs/store';
-import { SetUserData, ClearUserData } from './app.action';
+import { SetUserData, ClearUserData, GetRecipes, CreateRecipe } from './app.action';
 import { User } from '../core/models/user';
+import { RecipesService } from '../core/services/business/recipes/recipes.service';
+import { Recipe } from '../core/models/recipe';
+import { ModalController } from '@ionic/angular';
 
 export class AppStateModel {
     userProfile: User;
+    recipes: Recipe[];
+    totalRecipes: number;
 }
 
 @State<AppStateModel>({
     name: 'app',
     defaults: {
-        userProfile: null
+        userProfile: null,
+        recipes: [],
+        totalRecipes: 0,
     }
 })
 
 export class AppState {
 
+    constructor(
+        private recipeService: RecipesService,
+        private modal: ModalController,
+    ) {
+    }
+
 
     @Selector()
     static getUserProfile(state: AppStateModel) {
         return state.userProfile;
+    }
+
+    @Selector()
+    static getRecipes(state: AppStateModel) {
+        return state.recipes;
+    }
+
+    @Selector()
+    static getTotalRecipes(state: AppStateModel) {
+        return state.totalRecipes;
     }
 
     @Action(SetUserData)
@@ -37,5 +60,38 @@ export class AppState {
             ...state,
             userProfile: null
         });
+    }
+
+    @Action(GetRecipes)
+    getRecipes(ctx: StateContext<AppStateModel>, { }: GetRecipes) {
+        const state = ctx.getState();
+
+        this.recipeService.getRecipes().subscribe(data => {
+            data.recipes.map(r => {
+                if (r.creator.displayName === state.userProfile.displayName) {
+                    r.creator.displayName = 'You';
+                }
+            });
+            ctx.setState({
+                ...state,
+                recipes: data.recipes,
+                totalRecipes: data.totalRecipes
+            });
+        });
+
+    }
+
+    @Action(CreateRecipe)
+    createRecipe(ctx: StateContext<AppStateModel>, { recipeForm, image }: CreateRecipe) {
+        const state = ctx.getState();
+
+        this.recipeService.createRecipe(recipeForm, image).subscribe(recipe => {
+            console.log(recipe);
+            ctx.dispatch(new GetRecipes()).toPromise().then(res => {
+
+                this.modal.dismiss();
+            });
+        });
+
     }
 } 

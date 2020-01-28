@@ -21,6 +21,11 @@ export class SignupPage implements OnInit {
   constructor(private authService: AuthService, private router: Router, private formBuilder: FormBuilder) { }
 
   ngOnInit() {
+    this.authService.isAuthenticated().subscribe(isAuth => {
+      if (isAuth) {
+        this.router.navigateByUrl('/recipes');
+      }
+    });
     this.signupForm = this.formBuilder.group({
       firstName: ['', Validators.required],
       displayName: ['', Validators.required],

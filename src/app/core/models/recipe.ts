@@ -10,14 +10,14 @@ export class Recipe {
     description: string;
     descriptionPreview: string;
     imageUrl: string;
-    likes: any[];
-    comments: any[];
-    likesCount: number;
-    commentsCount: number;
+    likes?: any[];
+    comments?: any[];
+    likesCount?: number;
+    commentsCount?: number;
     createdAt: string;
     updatedAt: string;
-    createdAtToString: string;
-    updatedAtToString: string;
-    timeInterval: any;
-    creator: User;
+    createdAtToString?: string;
+    updatedAtToString?: string;
+    timeInterval?: any;
+    creator?: User;
 }

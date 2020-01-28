@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { Observable, of, Subject } from 'rxjs';
 import { Store } from '@ngxs/store';
 import { ClearUserData } from 'src/app/state/app.action';
+import { switchMap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,6 @@ import { ClearUserData } from 'src/app/state/app.action';
 export class AuthService {
 
   showHeaderBol = new Subject<boolean>();
-  imagePath: string;
 
   constructor(
     private http: HttpClient,
@@ -55,6 +55,7 @@ export class AuthService {
   logout() {
     localStorage.removeItem('ACCESS_TOKEN');
     localStorage.removeItem('USER_ID');
+    localStorage.removeItem('@@STATE');
     this.router.navigateByUrl('/auth');
     this.store.dispatch(new ClearUserData());
   }
@@ -72,39 +73,40 @@ export class AuthService {
     this.showHeaderBol.next(value);
   }
 
-  async upload(fileData, formData) {
+  upload(fileData, formData): Observable<any> {
 
     const imageData = new FormData();
 
     imageData.append('image', fileData);
     imageData.append('displayName', formData.displayName);
     imageData.append('email', formData.email);
-    await this.http.post<any>(environment.imageUploadUrl, imageData).subscribe(res => {
-      this.imagePath = res.filePath;
-      return;
-    });
+    return this.http.post<any>(environment.imageUploadUrl, imageData);
   }
 
   signup(formData: any, fileData: File): Observable<any> {
 
-    this.upload(fileData, formData);
-    let graphqlQuery =
-    {
-      query:
-        `mutation {
-        createUser(userInput: {
-          email: "${formData.email}", 
-          firstName: "${formData.firstName}", 
-          lastName: "${formData.lastName}", 
-          displayName: "${formData.displayName}", 
-          password: "${formData.password}",
-          confirmPassword: "${formData.confirmPassword}",
-          imageUrl: "${this.imagePath}"}){
-          _id
-          email
-        }
-      }`
-    };
-    return this.http.post<any>(environment.baseUrl, graphqlQuery);
+    return this.upload(fileData, formData).pipe(
+      switchMap(res => {
+        let graphqlQuery =
+        {
+          query:
+            `mutation {
+            createUser(userInput: {
+              email: "${formData.email}", 
+              firstName: "${formData.firstName}", 
+              lastName: "${formData.lastName}", 
+              displayName: "${formData.displayName}", 
+              password: "${formData.password}",
+              confirmPassword: "${formData.confirmPassword}",
+              imageUrl: "${res.filePath}"}){
+              _id
+              email
+            }
+          }`
+        };
+        return this.http.post<any>(environment.baseUrl, graphqlQuery);
+      })
+    );
+
   }
 }
