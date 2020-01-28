@@ -121,12 +121,17 @@ export class AppState {
     }
 
     @Action(CreateRecipe)
-    createRecipe(ctx: StateContext<AppStateModel>, { recipeForm, image }: CreateRecipe) {
-        return this.recipeService.createRecipe(recipeForm, image).pipe(map(recipe => {
-            console.log(recipe);
-            ctx.dispatch(new GetRecipes()).toPromise().then(res => {
-                this.modal.dismiss();
-            });
+    createRecipe(ctx: StateContext<AppStateModel>, { recipeForm, image, isEdit }: CreateRecipe) {
+        return this.recipeService.createRecipe(recipeForm, image, isEdit).pipe(map(recipe => {
+            if (isEdit) {
+                ctx.dispatch(new GetRecipe(recipeForm.id)).toPromise().then(res => {
+                    this.modal.dismiss();
+                });
+            } else {
+                ctx.dispatch(new GetRecipes()).toPromise().then(res => {
+                    this.modal.dismiss();
+                });
+            }
         }));
 
     }

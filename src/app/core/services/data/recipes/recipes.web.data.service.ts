@@ -171,38 +171,62 @@ export class RecipesWebDataService {
         const imageData = new FormData();
 
         imageData.append('image', media);
-
+        if (!media) {
+            return of(null);
+        }
         return this.httpClient.post<any>(environment.imageUploadUrl, imageData);
     }
 
-    createRecipe(formData: any, media: File): Observable<Recipe> {
-
-        let recipe: Recipe;
+    createRecipe(formData: any, media: File, isEdit: boolean): Observable<Recipe> {
+        let imageUrl: string;
         return this.upload(media).pipe(
             switchMap(res => {
-                const graphqlQuery =
-                {
-                    query: `
+                if (res) {
+                    imageUrl = res.filePath;
+                } else {
+                    imageUrl = formData.imageUrl;
+                }
+                let graphqlQuery;
+                if (isEdit) {
+                    graphqlQuery =
+                    {
+                        query: `
                         mutation {
-                            createRecipe(recipeInput: {
-                                title: "${formData.title}", 
-                                description: "${formData.description}", 
-                                imageUrl: "${res.filePath}"}) {
-                                    _id
-                                    title
-                                    description
-                                    imageUrl
-                                    likes
-                                    comments
-                                    createdAt
-                                    updatedAt
-                                    creator {
-                                        displayName
-                                        imageUrl
-                                    }
+                            updateRecipe(id: "${formData.id}", 
+                            recipeInput: {
+                              title: "${formData.title}", 
+                              description: "${formData.description}", 
+                              imageUrl: "${imageUrl}"}) {
+                                _id
+                                title
+                                imageUrl
                             }
-                }`};
-
+                          }`
+                    };
+                } else {
+                    graphqlQuery =
+                    {
+                        query: `
+                            mutation {
+                                createRecipe(recipeInput: {
+                                    title: "${formData.title}", 
+                                    description: "${formData.description}", 
+                                    imageUrl: "${imageUrl}"}) {
+                                        _id
+                                        title
+                                        description
+                                        imageUrl
+                                        likes
+                                        comments
+                                        createdAt
+                                        updatedAt
+                                        creator {
+                                            displayName
+                                            imageUrl
+                                        }
+                                }
+                    }`};
+                }
                 return this.httpClient.post<any>(environment.baseUrl, graphqlQuery)
                     .pipe(map(response => {
                         automapper

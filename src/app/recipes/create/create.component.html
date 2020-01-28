@@ -36,7 +36,7 @@
                     </ion-item>
                     <ion-item class="ion-no-padding">
                       <ion-label position="floating">Description</ion-label>
-                      <ion-textarea type="text" clearInput formControlName="description">
+                      <ion-textarea type="text" autoGrow=true clearInput formControlName="description">
                       </ion-textarea>
                     </ion-item>
                     <ion-item lines="none" *ngIf="form.description.touched && form.description.errors"
@@ -63,7 +63,7 @@
                   <ion-col>
                     <div style="display: flex; justify-content: space-between;">
                       <ion-button class="ion-no-margin ion-padding-horizontal ion-text-uppercase" type="submit"
-                        [disabled]="recipeForm.invalid">Create
+                        [disabled]="recipeForm.invalid || recipeForm.pristine">{{ isEdit ? 'Edit' : 'Create' }}
                       </ion-button>
                       <ion-button fill="outline" class="ion-no-margin ion-padding-horizontal ion-text-uppercase"
                         type="button" (click)="closeModal()">Cancel

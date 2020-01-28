@@ -71,7 +71,7 @@ export class DetailPage implements OnInit, OnDestroy {
   }
 
   onEdit() {
-    this.modal.create({ component: CreateRecipeComponent }).then(modalEl => {
+    this.modal.create({ component: CreateRecipeComponent, componentProps: { recipe: this.recipe } }).then(modalEl => {
       modalEl.present();
     });
   }

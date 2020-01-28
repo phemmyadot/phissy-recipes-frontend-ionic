@@ -18,8 +18,8 @@ export class RecipesService {
     return this.recipeDataService.getRecipe(recipeId);
   }
 
-  createRecipe(formData: any, Media: File): Observable<Recipe> {
-    return this.recipeDataService.createRecipe(formData, Media);
+  createRecipe(formData: any, Media: File, isEdit: boolean): Observable<Recipe> {
+    return this.recipeDataService.createRecipe(formData, Media, isEdit);
   }
 
   deleteRecipe(recipeId: string): Observable<boolean> {

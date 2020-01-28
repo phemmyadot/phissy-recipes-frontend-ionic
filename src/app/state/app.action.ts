@@ -33,5 +33,5 @@ export class ClearRecipes {
 export class CreateRecipe {
     static readonly type = '[App] CreateRecipe';
 
-    constructor(public recipeForm: any, public image: any) { }
+    constructor(public recipeForm: any, public image: any, public isEdit: boolean) { }
 }
