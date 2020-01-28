@@ -8,6 +8,8 @@ import { Observable } from 'rxjs';
 import { Recipe } from 'src/app/core/models/recipe';
 import { User } from 'src/app/core/models/user';
 import { RecipesService } from 'src/app/core/services/business/recipes/recipes.service';
+import { ModalController } from '@ionic/angular';
+import { CreateRecipeComponent } from '../create/create.component';
 
 @Component({
   selector: 'app-detail',
@@ -25,7 +27,8 @@ export class DetailPage implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private store: Store,
     private router: Router,
-    private recipeService: RecipesService) { }
+    private recipeService: RecipesService,
+    private modal: ModalController, ) { }
 
   ngOnInit() {
     // this.route.params.subscribe(params => {
@@ -68,7 +71,9 @@ export class DetailPage implements OnInit, OnDestroy {
   }
 
   onEdit() {
-
+    this.modal.create({ component: CreateRecipeComponent }).then(modalEl => {
+      modalEl.present();
+    });
   }
 
 }

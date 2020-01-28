@@ -7,14 +7,18 @@ import { IonicModule } from '@ionic/angular';
 import { DetailPageRoutingModule } from './detail-routing.module';
 
 import { DetailPage } from './detail.page';
+import { CreateRecipeComponent } from '../create/create.component';
+import { RecipesPageModule } from '../recipes.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    DetailPageRoutingModule
+    DetailPageRoutingModule,
+    RecipesPageModule
   ],
-  declarations: [DetailPage]
+  declarations: [DetailPage],
+  entryComponents: [],
 })
-export class DetailPageModule {}
+export class DetailPageModule { }
