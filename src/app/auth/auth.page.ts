@@ -44,6 +44,7 @@ export class AuthPage implements OnInit {
       translucent: true,
       cssClass: 'custom-class custom-loading'
     });
+    await loading.present();
     this.authService.login(this.loginForm.value).subscribe(res => {
       this.store.dispatch(new SetUserData(res.data.login.user));
       this.loginForm.reset();

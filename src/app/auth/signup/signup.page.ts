@@ -56,6 +56,7 @@ export class SignupPage implements OnInit {
       translucent: true,
       cssClass: 'custom-class custom-loading'
     });
+    await loading.present();
     this.authService.signup(this.signupForm.value, this.signupForm.value.image).subscribe(res => {
       this.signupForm.reset();
       this.router.navigateByUrl('/auth');
