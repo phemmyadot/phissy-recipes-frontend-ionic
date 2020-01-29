@@ -1,9 +1,12 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
-import { Store } from '@ngxs/store';
-import { CreateRecipe } from 'src/app/state/app.action';
+import { Store, Select } from '@ngxs/store';
 import { Recipe } from 'src/app/core/models/recipe';
+import { RecipesService } from 'src/app/core/services/business/recipes/recipes.service';
+import { User } from 'src/app/core/models/user';
+import { AppState } from 'src/app/state/app.state';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-create',
@@ -17,11 +20,14 @@ export class CreateRecipeComponent implements OnInit {
   errors = [];
   imagePreview: any = '';
   isEdit: boolean;
+  user: User;
+
+  @Select(AppState.getUserProfile) userProfile$: Observable<User>;
 
   constructor(
     private formBuilder: FormBuilder,
     private modal: ModalController,
-    private store: Store
+    private recipesService: RecipesService
   ) { }
 
   ngOnInit() {
@@ -43,6 +49,9 @@ export class CreateRecipeComponent implements OnInit {
         image: [null, Validators.required]
       });
     }
+    this.userProfile$.subscribe(user => {
+      this.user = user;
+    });
 
   }
 
@@ -69,6 +78,16 @@ export class CreateRecipeComponent implements OnInit {
   }
 
   onCreate() {
-    this.store.dispatch(new CreateRecipe(this.recipeForm.value, this.recipeForm.value.image, this.isEdit));
+    this.recipesService.createRecipe(this.recipeForm.value, this.recipeForm.value.image, this.isEdit).subscribe(res => {
+      if (this.isEdit) {
+        this.recipesService.getRecipe(this.recipeForm.value.id).subscribe(recipe => {
+          this.recipe = recipe;
+        })
+      } else {
+        this.recipesService.getRecipes(this.user._id).subscribe(res => {
+          this.modal.dismiss();
+        });
+      }
+    });
   }
 }

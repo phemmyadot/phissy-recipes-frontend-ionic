@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { RecipesDataService } from '../../data/recipes/recipes.data.service';
 import { Observable } from 'rxjs/internal/Observable';
 import { Recipe, RecipeData } from 'src/app/core/models/recipe';
+import { map } from 'rxjs/internal/operators/map';
 
 @Injectable({
   providedIn: 'root'
@@ -10,8 +11,15 @@ export class RecipesService {
 
   constructor(private recipeDataService: RecipesDataService) { }
 
-  getRecipes(): Observable<RecipeData> {
-    return this.recipeDataService.getRecipes();
+  getRecipes(user): Observable<RecipeData> {
+    return this.recipeDataService.getRecipes().pipe(map(data => {
+      data.recipes.map(r => {
+        if (r.creator.displayName === user) {
+          r.creator.displayName = 'You';
+        }
+      });
+      return data;
+    }));
   }
 
   getRecipe(recipeId: string): Observable<Recipe> {

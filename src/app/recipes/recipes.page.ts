@@ -8,7 +8,7 @@ import { AuthService } from '../core/services/misc/auth.service';
 import { Store, Select } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { AppState } from '../state/app.state';
-import { GetRecipes, ClearRecipes } from '../state/app.action';
+import { RecipesService } from '../core/services/business/recipes/recipes.service';
 
 @Component({
   selector: 'app-recipes',
@@ -17,24 +17,28 @@ import { GetRecipes, ClearRecipes } from '../state/app.action';
 })
 export class RecipesPage implements OnInit, OnDestroy {
 
-  recipes: Observable<Recipe[]>;
+  recipes: Recipe[];
   totalRecipes: number;
+  user: User;
 
   @Select(AppState.getUserProfile) userProfile$: Observable<User>;
-  @Select(AppState.getRecipes) recipes$: Observable<Recipe[]>;
-  @Select(AppState.getTotalRecipes) totalRecipes$: Observable<number>;
 
   constructor(
     private router: Router,
     private modal: ModalController,
     private authService: AuthService,
-    private store: Store) { }
+    private store: Store,
+    private recipeService: RecipesService) {
+    this.userProfile$.subscribe(user => {
+      this.user = user;
+      this.recipeService.getRecipes(this.user.displayName).subscribe(data => {
+        this.recipes = data.recipes;
+        this.totalRecipes = data.totalRecipes;
+      });
+    });
+  }
 
   ngOnInit() {
-    // this.store.dispatch(new GetRecipes());
-    // this.totalRecipes$.subscribe(total => {
-    //   this.totalRecipes = total;
-    // });
   }
 
 
@@ -44,10 +48,6 @@ export class RecipesPage implements OnInit, OnDestroy {
 
 
   ionViewWillEnter() {
-    this.store.dispatch(new GetRecipes());
-    this.totalRecipes$.subscribe(total => {
-      this.totalRecipes = total;
-    });
     this.authService.showHeader(true);
   }
 
@@ -60,7 +60,6 @@ export class RecipesPage implements OnInit, OnDestroy {
 
 
   ngOnDestroy() {
-    this.store.dispatch(new ClearRecipes());
   }
 
 }

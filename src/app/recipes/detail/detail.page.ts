@@ -2,7 +2,6 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AuthService } from 'src/app/core/services/misc/auth.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Store, Select } from '@ngxs/store';
-import { GetRecipe, ClearRecipe } from 'src/app/state/app.action';
 import { AppState } from 'src/app/state/app.state';
 import { Observable } from 'rxjs';
 import { Recipe } from 'src/app/core/models/recipe';
@@ -18,7 +17,6 @@ import { CreateRecipeComponent } from '../create/create.component';
 })
 export class DetailPage implements OnInit, OnDestroy {
 
-  @Select(AppState.getRecipe) recipe$: Observable<Recipe>;
 
   recipeId: string;
   recipe: Recipe;
@@ -28,15 +26,18 @@ export class DetailPage implements OnInit, OnDestroy {
     private store: Store,
     private router: Router,
     private recipeService: RecipesService,
-    private modal: ModalController, ) { }
+    private modal: ModalController, ) {
+    this.route.params.subscribe(params => {
+      this.recipeId = params.id;
+      this.recipeService.getRecipe(this.recipeId).subscribe(recipe => {
+        this.recipe = recipe;
+        console.log(recipe);
+        this.creator = recipe.creator;
+      });
+    });
+  }
 
   ngOnInit() {
-     this.route.params.subscribe(params => {
-       this.store.dispatch(new GetRecipe(params.id));
-       console.log(params.id);
-       this.recipeId = params.id;
-     });
-
 
   }
 
@@ -45,16 +46,7 @@ export class DetailPage implements OnInit, OnDestroy {
   }
 
   ionViewWillEnter() {
-    this.route.params.subscribe(params => {
-      this.store.dispatch(new GetRecipe(params.id));
-      console.log(params.id);
-      this.recipeId = params.id;
-      this.recipe$.subscribe(recipe => {
-        this.recipe = recipe;
-        console.log(recipe);
-        this.creator = recipe.creator;
-      });
-    });
+
     this.authService.showHeader(false);
   }
 

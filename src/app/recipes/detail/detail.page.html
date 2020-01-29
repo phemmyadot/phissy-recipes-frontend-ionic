@@ -7,39 +7,39 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding-vertical">
+<ion-content class="ion-padding-vertical" *ngIf="recipe">
   <ion-grid>
     <ion-row>
       <ion-col>
-        <img class="image" [src]="(recipe$ | async).imageUrl" style="box-shadow: 0px 0px 8px -3px #800080">
+        <img class="image" [src]="recipe?.imageUrl" style="box-shadow: 0px 0px 8px -3px #800080">
       </ion-col>
     </ion-row>
     <ion-row class="ion-margin">
       <ion-col>
-        <ion-label style="font-size: 18px;" color="primary">{{(recipe$ | async).title}}</ion-label>
+        <ion-label style="font-size: 18px;" color="primary">{{recipe?.title}}</ion-label>
       </ion-col>
     </ion-row>
     <ion-row class="ion-margin-horizontal">
       <ion-col>
         <ion-row style="font-size: 12px;">
           <ion-col>
-            <ion-label>{{(recipe$ | async).likesCount}} Likes</ion-label>
+            <ion-label>{{recipe?.likesCount}} Likes</ion-label>
           </ion-col>
         </ion-row>
         <ion-row style="font-size: 12px;">
           <ion-col>
-            <ion-label>{{(recipe$ | async).commentsCount}} Comments</ion-label>
+            <ion-label>{{recipe?.commentsCount}} Comments</ion-label>
           </ion-col>
         </ion-row>
         <ion-row style="font-size: 12px;">
           <ion-col>
-            <ion-label>Posted by <a (click)="openCreator()">{{(recipe$ | async).creator.displayName}}</a>
+            <ion-label>Posted by <a (click)="openCreator()">{{recipe?.creator.displayName}}</a>
             </ion-label>
           </ion-col>
         </ion-row>
         <ion-row style="font-size: 12px;">
           <ion-col>
-            <ion-label>Posted {{(recipe$ | async).timeInterval}}</ion-label>
+            <ion-label>Posted {{recipe?.timeInterval}}</ion-label>
           </ion-col>
         </ion-row>
       </ion-col>
@@ -58,7 +58,7 @@
 
     <ion-row style="font-size: 14px;" class="ion-margin">
       <ion-col>
-        <ion-label>{{(recipe$ | async).description}}</ion-label>
+        <ion-label>{{recipe?.description}}</ion-label>
       </ion-col>
     </ion-row>
   </ion-grid>
