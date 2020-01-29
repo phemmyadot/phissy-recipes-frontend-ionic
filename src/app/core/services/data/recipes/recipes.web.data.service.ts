@@ -31,6 +31,7 @@ export class RecipesWebDataService {
                         title
                         description
                         imageUrl
+                        imagePubicId
                         likes
                         comments
                         createdAt
@@ -96,6 +97,7 @@ export class RecipesWebDataService {
                         title
                         description
                         imageUrl
+                        imagePubicId
                         likes
                         comments
                         createdAt
@@ -179,12 +181,15 @@ export class RecipesWebDataService {
 
     createRecipe(formData: any, media: File, isEdit: boolean): Observable<boolean> {
         let imageUrl: string;
+        let imagePubicId: string;
         return this.upload(media).pipe(
             switchMap(res => {
                 if (res) {
                     imageUrl = res.filePath;
+                    imagePubicId = res.publicId;
                 } else {
                     imageUrl = formData.imageUrl;
+                    imagePubicId = formData.publicId;
                 }
                 let graphqlQuery;
                 if (isEdit) {
@@ -196,11 +201,11 @@ export class RecipesWebDataService {
                             recipeInput: {
                               title: "${formData.title}", 
                               description: "${formData.description}", 
+                              imagePubicId: "${imagePubicId}", 
                               imageUrl: "${imageUrl}"}) {
-                                _id
-                                title
-                                imageUrl
-                            }
+                                  _id
+                                  title
+                              }
                           }`
                     };
                 } else {
@@ -211,20 +216,11 @@ export class RecipesWebDataService {
                                 createRecipe(recipeInput: {
                                     title: "${formData.title}", 
                                     description: "${formData.description}", 
+                                    imagePubicId: "${imagePubicId}", 
                                     imageUrl: "${imageUrl}"}) {
                                         _id
                                         title
-                                        description
-                                        imageUrl
-                                        likes
-                                        comments
-                                        createdAt
-                                        updatedAt
-                                        creator {
-                                            displayName
-                                            imageUrl
-                                        }
-                                }
+                                    }
                     }`};
                 }
                 return this.httpClient.post<any>(environment.baseUrl, graphqlQuery);

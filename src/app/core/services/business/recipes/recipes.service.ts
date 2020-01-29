@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { RecipesDataService } from '../../data/recipes/recipes.data.service';
-import { Observable } from 'rxjs/internal/Observable';
 import { Recipe, RecipeData } from 'src/app/core/models/recipe';
-import { map } from 'rxjs/internal/operators/map';
-import { Subject } from 'rxjs';
+import { Subject, Observable } from 'rxjs';
+import { ModalController } from '@ionic/angular';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +17,19 @@ export class RecipesService {
   isCreated = new Subject<boolean>();
   isEdited = new Subject<boolean>();
 
-  constructor(private recipeDataService: RecipesDataService) { }
+  getTotalRecipes(): Observable<number> {
+    return this.totalRecipes.asObservable();
+  }
+
+  getRecipeObs(): Observable<Recipe> {
+    return this.recipe.asObservable();
+  }
+
+  constructor(
+    private recipeDataService: RecipesDataService,
+    private modal: ModalController,
+    private router: Router
+  ) { }
 
   getRecipes(user) {
     this.recipeDataService.getRecipes().subscribe(data => {
@@ -37,19 +49,25 @@ export class RecipesService {
     });
   }
 
-  createRecipe(formData: any, Media: File, isEdit: boolean) {
+  createRecipe(formData: any, Media: File, isEdit: boolean, user: string) {
     this.recipeDataService.createRecipe(formData, Media, isEdit).subscribe(res => {
       if (isEdit) {
-        this.isEdited.next(res);
+        this.modal.dismiss();
+        this.isEdited.next(true);
+        this.getRecipe(formData.id);
       } else {
-        this.isCreated.next(res);
+        this.modal.dismiss();
+        this.isCreated.next(true);
+        this.getRecipes(user);
       }
     });
   }
 
-  deleteRecipe(recipeId: string) {
+  deleteRecipe(recipeId: string, user: string) {
     this.recipeDataService.deleteRecipe(recipeId).subscribe(res => {
+      this.router.navigate(['recipes']);
       this.isDeleted.next(res);
+      this.getRecipes(user);
     });
   }
 }

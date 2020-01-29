@@ -20,4 +20,5 @@ export class Recipe {
     updatedAtToString?: string;
     timeInterval?: any;
     creator?: User;
+    publicId?: string;
 }

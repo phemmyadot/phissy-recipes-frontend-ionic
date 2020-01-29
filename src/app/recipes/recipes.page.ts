@@ -18,7 +18,7 @@ import { RecipesService } from '../core/services/business/recipes/recipes.servic
 export class RecipesPage implements OnInit, OnDestroy {
 
   recipes: Subject<Recipe[]>;
-  totalRecipes: Subject<number>;
+  totalRecipes: number = 0;
   user: User;
 
   @Select(AppState.getUserProfile) userProfile$: Observable<User>;
@@ -27,18 +27,19 @@ export class RecipesPage implements OnInit, OnDestroy {
     private router: Router,
     private modal: ModalController,
     private authService: AuthService,
-    private store: Store,
     private recipeService: RecipesService) {
-    this.userProfile$.subscribe(user => {
-      this.user = user;
-      this.recipeService.getRecipes(this.user.displayName);
-      this.recipes = this.recipeService.recipes;
-      this.totalRecipes = this.recipeService.totalRecipes;
-    });
+
   }
 
-  ngOnInit() {
-
+  async ngOnInit() {
+    await this.userProfile$.subscribe(user => {
+      this.user = user;
+    });
+    this.recipeService.getRecipes(this.user.displayName);
+    this.recipes = this.recipeService.recipes;
+    this.recipeService.getTotalRecipes().subscribe(total => {
+      this.totalRecipes = total;
+    });
   }
 
 

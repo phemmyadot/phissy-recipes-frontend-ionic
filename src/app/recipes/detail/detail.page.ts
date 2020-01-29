@@ -21,6 +21,7 @@ export class DetailPage implements OnInit, OnDestroy {
   recipeId: string;
   recipe: Subject<Recipe>;
   creator: User;
+  recipeObj: Recipe;
   constructor(private authService: AuthService,
     private route: ActivatedRoute,
     private store: Store,
@@ -32,8 +33,9 @@ export class DetailPage implements OnInit, OnDestroy {
       this.recipeId = params.id;
       this.recipeService.getRecipe(this.recipeId);
     });
-    this.recipeService.recipe.subscribe(recipe => {
+    this.recipeService.getRecipeObs().subscribe(recipe => {
       console.log(recipe);
+      this.recipeObj = recipe;
       this.recipeId = recipe.id;
       this.creator = recipe.creator;
     });
@@ -55,16 +57,12 @@ export class DetailPage implements OnInit, OnDestroy {
     // this.store.dispatch(new ClearRecipe());
   }
 
-  async onDelete() {
-    await this.recipeService.deleteRecipe(this.recipeId)
-
-    this.recipeService.getRecipes(this.creator.displayName);
-    this.router.navigate(['recipes']);
-
+  onDelete() {
+    this.recipeService.deleteRecipe(this.recipeId, this.creator.displayName);
   }
 
   onEdit() {
-    this.modal.create({ component: CreateRecipeComponent, componentProps: { recipe: this.recipe } }).then(modalEl => {
+    this.modal.create({ component: CreateRecipeComponent, componentProps: { recipe: this.recipeObj } }).then(modalEl => {
       modalEl.present();
     });
   }

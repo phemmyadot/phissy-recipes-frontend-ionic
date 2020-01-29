@@ -13,39 +13,43 @@
   </ion-fab>
   <ion-grid>
     <ion-row>
-      <div *ngIf="(totalRecipes | async) == 0">No available recipe!</div>
-      <ion-col size-sm="4" *ngFor="let recipe of recipes | async">
-        <ion-card>
-          <ion-card-header class="ion-no-padding" style="position: absolute; opacity: 0.8;width: 100%;">
-            <ion-item lines=" none" button routerLink="/profile">
-              <ion-avatar slot="start">
-                <img [src]="recipe.creator.imageUrl">
-              </ion-avatar>
-              <div>
-                <ion-label>{{ recipe.creator.displayName }}</ion-label>
-                <ion-text class="recipe-post-time">{{ recipe.timeInterval }}</ion-text>
+      <div *ngIf="totalRecipes == 0">
+        <ion-label>No available recipe!</ion-label>
+      </div>
+      <div>
+        <ion-col size-sm="4" *ngFor="let recipe of recipes | async">
+          <ion-card>
+            <ion-card-header class="ion-no-padding" style="position: absolute; opacity: 0.8;width: 100%;">
+              <ion-item lines=" none" button routerLink="/profile">
+                <ion-avatar slot="start">
+                  <img [src]="recipe.creator.imageUrl">
+                </ion-avatar>
+                <div>
+                  <ion-label>{{ recipe.creator.displayName }}</ion-label>
+                  <ion-text class="recipe-post-time">{{ recipe.timeInterval }}</ion-text>
+                </div>
+              </ion-item>
+            </ion-card-header>
+            <ion-img (click)="openRecipeDetail(recipe.id)" [src]="recipe.imageUrl"
+              style="height: 200px;object-fit: cover;">
+            </ion-img>
+            <ion-card-title class="ion-margin-horizontal ion-margin-top">{{ recipe.title }}</ion-card-title>
+            <ion-card-content>
+              <ion-text> {{ recipe.descriptionPreview }} </ion-text>
+              <div style="display: flex;">
+                <ion-button fill="none">
+                  <ion-icon name="chatbubbles" slot="start"></ion-icon>
+                  <ion-label>{{ recipe.commentsCount }}</ion-label>
+                </ion-button>
+                <ion-button fill="none">
+                  <ion-icon name="heart" slot="start"></ion-icon>
+                  <ion-label>{{ recipe.likesCount }}</ion-label>
+                </ion-button>
               </div>
-            </ion-item>
-          </ion-card-header>
-          <ion-img (click)="openRecipeDetail(recipe.id)" [src]="recipe.imageUrl"
-            style="height: 200px;object-fit: cover;">
-          </ion-img>
-          <ion-card-title class="ion-margin-horizontal ion-margin-top">{{ recipe.title }}</ion-card-title>
-          <ion-card-content>
-            <ion-text> {{ recipe.descriptionPreview }} </ion-text>
-            <div style="display: flex;">
-              <ion-button fill="none">
-                <ion-icon name="chatbubbles" slot="start"></ion-icon>
-                <ion-label>{{ recipe.commentsCount }}</ion-label>
-              </ion-button>
-              <ion-button fill="none">
-                <ion-icon name="heart" slot="start"></ion-icon>
-                <ion-label>{{ recipe.likesCount }}</ion-label>
-              </ion-button>
-            </div>
-          </ion-card-content>
-        </ion-card>
-      </ion-col>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </div>
     </ion-row>
   </ion-grid>
 
