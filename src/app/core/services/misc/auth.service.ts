@@ -53,11 +53,11 @@ export class AuthService {
   }
 
   logout() {
+    this.store.dispatch(new ClearUserData());
     localStorage.removeItem('ACCESS_TOKEN');
     localStorage.removeItem('USER_ID');
     localStorage.removeItem('@@STATE');
     this.router.navigateByUrl('/auth');
-    this.store.dispatch(new ClearUserData());
   }
 
   isAuthenticated(): Observable<boolean> {
