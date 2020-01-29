@@ -14,6 +14,7 @@ export class SignupPage implements OnInit {
 
   signupForm: FormGroup;
   authErrors = [];
+  authErrorsLength: number = 0;
   fileData: File = null;
   imagePreview: any = '';
 
@@ -63,7 +64,7 @@ export class SignupPage implements OnInit {
       loading.dismiss();
     }, err => {
       err.error.errors.forEach(err => {
-        this.authErrors.push(err);
+        this.authErrors = err;
         loading.dismiss();
       });
     });

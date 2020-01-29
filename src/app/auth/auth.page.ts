@@ -6,6 +6,7 @@ import { Subject } from 'rxjs';
 import { Store } from '@ngxs/store';
 import { SetUserData } from '../state/app.action';
 import { LoadingController } from '@ionic/angular';
+import { ErrorInterceptorService } from '../core/services/misc/error-interceptor.service';
 
 @Component({
   selector: 'app-auth',
@@ -15,14 +16,15 @@ import { LoadingController } from '@ionic/angular';
 export class AuthPage implements OnInit {
 
   loginForm: FormGroup;
-  authErrors = [];
-  authErrorsObs = new Subject<any>();
+  authErrors: any[];
+  authErrorsLength: number = 0;
 
   constructor(
     private authService: AuthService,
     private router: Router,
     private store: Store,
-    public loadingController: LoadingController
+    public loadingController: LoadingController,
+    private errorService: ErrorInterceptorService
   ) { }
 
   ngOnInit() {
@@ -35,6 +37,8 @@ export class AuthPage implements OnInit {
       email: new FormControl('', [Validators.required, Validators.email]),
       password: new FormControl('', [Validators.required, Validators.minLength(6)])
     });
+
+
   }
 
   async onLogin() {
@@ -51,7 +55,9 @@ export class AuthPage implements OnInit {
       this.router.navigateByUrl('/');
       loading.dismiss();
     }, err => {
-      this.authErrorsObs.next(err.error.errors);
+      console.log('Login Failed With ---->', err);
+      this.authErrors = err;
+      this.authErrorsLength = err.length;
       loading.dismiss();
     });
   }

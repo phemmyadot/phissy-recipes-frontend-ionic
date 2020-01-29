@@ -6,7 +6,7 @@
                     <ion-title>SIGN UP</ion-title>
                 </ion-col>
             </ion-row>
-            <ion-row *ngIf="authErrors.length !== 0">
+            <ion-row *ngIf="authErrorsLength > 0">
                 <ion-col class="ion-no-padding ion-no-margin ion-margin-top ion-text-center" style="font-size: 11px;">
                     <div *ngFor="let err of authErrors">
                         <ion-text color="danger">{{ err.message }}</ion-text>
