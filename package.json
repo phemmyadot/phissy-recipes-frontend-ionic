@@ -6,13 +6,13 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "ionic build --prod",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
     "start-ionic": "ionic serve",
     "config": "npm config get prefix",
-    "ionic-build": " npm run config && ionic build"
+    "ionic-build": " npm run config && build"
   },
   "private": true,
   "dependencies": {
