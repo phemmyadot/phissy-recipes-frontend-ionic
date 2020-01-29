@@ -177,7 +177,7 @@ export class RecipesWebDataService {
         return this.httpClient.post<any>(environment.imageUploadUrl, imageData);
     }
 
-    createRecipe(formData: any, media: File, isEdit: boolean): Observable<Recipe> {
+    createRecipe(formData: any, media: File, isEdit: boolean): Observable<boolean> {
         let imageUrl: string;
         return this.upload(media).pipe(
             switchMap(res => {
@@ -227,40 +227,7 @@ export class RecipesWebDataService {
                                 }
                     }`};
                 }
-                return this.httpClient.post<any>(environment.baseUrl, graphqlQuery)
-                    .pipe(map(response => {
-                        automapper
-                            .createMap(RecipeDTO, Recipe)
-                            .forMember("id", function (opts) {
-                                opts.mapFrom("_id")
-                            })
-                            .forMember("title", function (opts) {
-                                opts.mapFrom("title")
-                            })
-                            .forMember("description", function (opts) {
-                                opts.mapFrom("description")
-                            })
-                            .forMember("imageUrl", function (opts) {
-                                opts.mapFrom("imageUrl")
-                            })
-                            .forMember("likes", function (opts) {
-                                opts.mapFrom("likes")
-                            })
-                            .forMember("comments", function (opts) {
-                                opts.mapFrom("comments")
-                            })
-                            .forMember("createdAt", function (opts) {
-                                opts.mapFrom("createdAt")
-                            })
-                            .forMember("updatedAt", function (opts) {
-                                opts.mapFrom("updatedAt")
-                            })
-                            .forMember("creator", function (opts) {
-                                opts.mapFrom("creator")
-                            });
-                        const data: Recipe = automapper.map(RecipeDTO, Recipe, response.data.createRecipe);
-                        return data;
-                    }));
+                return this.httpClient.post<any>(environment.baseUrl, graphqlQuery);
             })
         );
 

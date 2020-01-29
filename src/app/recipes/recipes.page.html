@@ -13,8 +13,8 @@
   </ion-fab>
   <ion-grid>
     <ion-row>
-      <div *ngIf="totalRecipes == 0">No available recipe!</div>
-      <ion-col size-sm="4" *ngFor="let recipe of recipes">
+      <div *ngIf="(totalRecipes | async) == 0">No available recipe!</div>
+      <ion-col size-sm="4" *ngFor="let recipe of recipes | async">
         <ion-card>
           <ion-card-header class="ion-no-padding" style="position: absolute; opacity: 0.8;width: 100%;">
             <ion-item lines=" none" button routerLink="/profile">

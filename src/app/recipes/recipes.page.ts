@@ -6,7 +6,7 @@ import { Recipe } from '../core/models/recipe';
 import { User } from '../core/models/user';
 import { AuthService } from '../core/services/misc/auth.service';
 import { Store, Select } from '@ngxs/store';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { AppState } from '../state/app.state';
 import { RecipesService } from '../core/services/business/recipes/recipes.service';
 
@@ -17,8 +17,8 @@ import { RecipesService } from '../core/services/business/recipes/recipes.servic
 })
 export class RecipesPage implements OnInit, OnDestroy {
 
-  recipes: Recipe[];
-  totalRecipes: number;
+  recipes: Subject<Recipe[]>;
+  totalRecipes: Subject<number>;
   user: User;
 
   @Select(AppState.getUserProfile) userProfile$: Observable<User>;
@@ -31,14 +31,14 @@ export class RecipesPage implements OnInit, OnDestroy {
     private recipeService: RecipesService) {
     this.userProfile$.subscribe(user => {
       this.user = user;
-      this.recipeService.getRecipes(this.user.displayName).subscribe(data => {
-        this.recipes = data.recipes;
-        this.totalRecipes = data.totalRecipes;
-      });
+      this.recipeService.getRecipes(this.user.displayName);
+      this.recipes = this.recipeService.recipes;
+      this.totalRecipes = this.recipeService.totalRecipes;
     });
   }
 
   ngOnInit() {
+
   }
 
 

@@ -3,7 +3,7 @@ import { AuthService } from 'src/app/core/services/misc/auth.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Store, Select } from '@ngxs/store';
 import { AppState } from 'src/app/state/app.state';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { Recipe } from 'src/app/core/models/recipe';
 import { User } from 'src/app/core/models/user';
 import { RecipesService } from 'src/app/core/services/business/recipes/recipes.service';
@@ -19,7 +19,7 @@ export class DetailPage implements OnInit, OnDestroy {
 
 
   recipeId: string;
-  recipe: Recipe;
+  recipe: Subject<Recipe>;
   creator: User;
   constructor(private authService: AuthService,
     private route: ActivatedRoute,
@@ -27,13 +27,15 @@ export class DetailPage implements OnInit, OnDestroy {
     private router: Router,
     private recipeService: RecipesService,
     private modal: ModalController, ) {
+    this.recipe = this.recipeService.recipe;
     this.route.params.subscribe(params => {
       this.recipeId = params.id;
-      this.recipeService.getRecipe(this.recipeId).subscribe(recipe => {
-        this.recipe = recipe;
-        console.log(recipe);
-        this.creator = recipe.creator;
-      });
+      this.recipeService.getRecipe(this.recipeId);
+    });
+    this.recipeService.recipe.subscribe(recipe => {
+      console.log(recipe);
+      this.recipeId = recipe.id;
+      this.creator = recipe.creator;
     });
   }
 
@@ -46,7 +48,6 @@ export class DetailPage implements OnInit, OnDestroy {
   }
 
   ionViewWillEnter() {
-
     this.authService.showHeader(false);
   }
 
@@ -54,12 +55,12 @@ export class DetailPage implements OnInit, OnDestroy {
     // this.store.dispatch(new ClearRecipe());
   }
 
-  onDelete() {
-    this.recipeService.deleteRecipe(this.recipe.id).subscribe(isDeleted => {
-      if (isDeleted) {
-        this.router.navigate(['recipes']);
-      }
-    });
+  async onDelete() {
+    await this.recipeService.deleteRecipe(this.recipeId)
+
+    this.recipeService.getRecipes(this.creator.displayName);
+    this.router.navigate(['recipes']);
+
   }
 
   onEdit() {

@@ -6,7 +6,7 @@ import { Recipe } from 'src/app/core/models/recipe';
 import { RecipesService } from 'src/app/core/services/business/recipes/recipes.service';
 import { User } from 'src/app/core/models/user';
 import { AppState } from 'src/app/state/app.state';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-create',
@@ -15,7 +15,7 @@ import { Observable } from 'rxjs';
 })
 export class CreateRecipeComponent implements OnInit {
 
-  @Input() recipe: Recipe;
+  @Input() recipe: Subject<Recipe>;
   recipeForm: FormGroup;
   errors = [];
   imagePreview: any = '';
@@ -32,27 +32,28 @@ export class CreateRecipeComponent implements OnInit {
 
   ngOnInit() {
 
-    if (this.recipe) {
-      this.isEdit = true;
-      this.recipeForm = this.formBuilder.group({
-        title: [this.recipe.title, Validators.required],
-        description: [this.recipe.description, Validators.required],
-        image: [null],
-        imageUrl: [this.recipe.imageUrl],
-        id: [this.recipe.id],
+    this.recipe.subscribe(recipe => {
+      if (recipe) {
+        this.isEdit = true;
+        this.recipeForm = this.formBuilder.group({
+          title: [recipe.title, Validators.required],
+          description: [recipe.description, Validators.required],
+          image: [null],
+          imageUrl: [recipe.imageUrl],
+          id: [recipe.id],
+        });
+      } else {
+        this.isEdit = false;
+        this.recipeForm = this.formBuilder.group({
+          title: ['', Validators.required],
+          description: ['', Validators.required],
+          image: [null, Validators.required]
+        });
+      }
+      this.userProfile$.subscribe(user => {
+        this.user = user;
       });
-    } else {
-      this.isEdit = false;
-      this.recipeForm = this.formBuilder.group({
-        title: ['', Validators.required],
-        description: ['', Validators.required],
-        image: [null, Validators.required]
-      });
-    }
-    this.userProfile$.subscribe(user => {
-      this.user = user;
     });
-
   }
 
   get form() { return this.recipeForm.controls; }
@@ -77,17 +78,14 @@ export class CreateRecipeComponent implements OnInit {
     reader.readAsDataURL(file);
   }
 
-  onCreate() {
-    this.recipesService.createRecipe(this.recipeForm.value, this.recipeForm.value.image, this.isEdit).subscribe(res => {
-      if (this.isEdit) {
-        this.recipesService.getRecipe(this.recipeForm.value.id).subscribe(recipe => {
-          this.recipe = recipe;
-        })
-      } else {
-        this.recipesService.getRecipes(this.user._id).subscribe(res => {
-          this.modal.dismiss();
-        });
-      }
-    });
+  async onCreate() {
+    await this.recipesService.createRecipe(this.recipeForm.value, this.recipeForm.value.image, this.isEdit);
+    if (this.isEdit) {
+      this.recipesService.getRecipe(this.recipeForm.value.id);
+      this.modal.dismiss();
+    } else {
+      this.recipesService.getRecipes(this.user._id);
+      this.modal.dismiss();
+    }
   }
 }
