@@ -5,6 +5,7 @@ import { AuthService } from '../core/services/misc/auth.service';
 import { Subject } from 'rxjs';
 import { Store } from '@ngxs/store';
 import { SetUserData } from '../state/app.action';
+import { LoadingController } from '@ionic/angular';
 
 @Component({
   selector: 'app-auth',
@@ -17,7 +18,12 @@ export class AuthPage implements OnInit {
   authErrors = [];
   authErrorsObs = new Subject<any>();
 
-  constructor(private authService: AuthService, private router: Router, private store: Store) { }
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private store: Store,
+    public loadingController: LoadingController
+  ) { }
 
   ngOnInit() {
     this.authService.isAuthenticated().subscribe(isAuth => {
@@ -31,14 +37,21 @@ export class AuthPage implements OnInit {
     });
   }
 
-  onLogin() {
+  async onLogin() {
+    const loading = await this.loadingController.create({
+      spinner: "dots",
+      message: '',
+      translucent: true,
+      cssClass: 'custom-class custom-loading'
+    });
     this.authService.login(this.loginForm.value).subscribe(res => {
-      console.log('logged in', res);
       this.store.dispatch(new SetUserData(res.data.login.user));
       this.loginForm.reset();
       this.router.navigateByUrl('/');
+      loading.dismiss();
     }, err => {
       this.authErrorsObs.next(err.error.errors);
+      loading.dismiss();
     });
   }
 

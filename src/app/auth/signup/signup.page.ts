@@ -3,6 +3,7 @@ import { AuthService } from 'src/app/core/services/misc/auth.service';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MustMatch } from './confirmPassword';
+import { LoadingController } from '@ionic/angular';
 
 @Component({
   selector: 'app-signup',
@@ -18,7 +19,12 @@ export class SignupPage implements OnInit {
 
   public message: string;
 
-  constructor(private authService: AuthService, private router: Router, private formBuilder: FormBuilder) { }
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private formBuilder: FormBuilder,
+    public loadingController: LoadingController
+  ) { }
 
   ngOnInit() {
     this.authService.isAuthenticated().subscribe(isAuth => {
@@ -43,13 +49,21 @@ export class SignupPage implements OnInit {
     this.authService.showHeader(false);
   }
 
-  onSignup() {
+  async onSignup() {
+    const loading = await this.loadingController.create({
+      spinner: "dots",
+      message: '',
+      translucent: true,
+      cssClass: 'custom-class custom-loading'
+    });
     this.authService.signup(this.signupForm.value, this.signupForm.value.image).subscribe(res => {
       this.signupForm.reset();
       this.router.navigateByUrl('/auth');
+      loading.dismiss();
     }, err => {
       err.error.errors.forEach(err => {
         this.authErrors.push(err);
+        loading.dismiss();
       });
     });
   }
