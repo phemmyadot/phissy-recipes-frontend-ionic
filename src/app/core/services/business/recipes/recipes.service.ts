@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { RecipesDataService } from '../../data/recipes/recipes.data.service';
 import { Recipe, RecipeData } from 'src/app/core/models/recipe';
 import { Subject, Observable } from 'rxjs';
-import { ModalController } from '@ionic/angular';
+import { ModalController, LoadingController } from '@ionic/angular';
 import { Router } from '@angular/router';
 
 @Injectable({
@@ -28,10 +28,18 @@ export class RecipesService {
   constructor(
     private recipeDataService: RecipesDataService,
     private modal: ModalController,
-    private router: Router
+    private router: Router,
+    public loadingController: LoadingController
   ) { }
 
-  getRecipes(user) {
+  async getRecipes(user) {
+    const loading = await this.loadingController.create({
+      spinner: "dots",
+      message: '',
+      translucent: true,
+      cssClass: 'custom-class custom-loading'
+    });
+    await loading.present();
     this.recipeDataService.getRecipes().subscribe(data => {
       data.recipes.map(r => {
         if (r.creator.displayName === user) {
@@ -40,16 +48,33 @@ export class RecipesService {
         this.recipes.next(data.recipes);
         this.totalRecipes.next(data.totalRecipes);
       });
+      loading.dismiss();
     });
   }
 
-  getRecipe(recipeId: string) {
+  async getRecipe(recipeId: string) {
+    const loading = await this.loadingController.create({
+      spinner: "dots",
+      message: '',
+      translucent: true,
+      cssClass: 'custom-class custom-loading'
+    });
+    await loading.present();
     this.recipeDataService.getRecipe(recipeId).subscribe(data => {
       this.recipe.next(data);
+      loading.dismiss();
     });
   }
 
-  createRecipe(formData: any, Media: File, isEdit: boolean, user: string) {
+  async createRecipe(formData: any, Media: File, isEdit: boolean, user: string) {
+    const loading = await this.loadingController.create({
+      spinner: "dots",
+      message: '',
+      translucent: true,
+      cssClass: 'custom-class custom-loading'
+    });
+    await loading.present();
+
     this.recipeDataService.createRecipe(formData, Media, isEdit).subscribe(res => {
       if (isEdit) {
         this.modal.dismiss();
@@ -60,14 +85,24 @@ export class RecipesService {
         this.isCreated.next(true);
         this.getRecipes(user);
       }
+      loading.dismiss();
     });
+
   }
 
-  deleteRecipe(recipeId: string, user: string) {
+  async  deleteRecipe(recipeId: string, user: string) {
+    const loading = await this.loadingController.create({
+      spinner: "dots",
+      message: '',
+      translucent: true,
+      cssClass: 'custom-class custom-loading'
+    });
+    await loading.present();
     this.recipeDataService.deleteRecipe(recipeId).subscribe(res => {
       this.router.navigate(['recipes']);
       this.isDeleted.next(res);
       this.getRecipes(user);
+      loading.dismiss();
     });
   }
 }
