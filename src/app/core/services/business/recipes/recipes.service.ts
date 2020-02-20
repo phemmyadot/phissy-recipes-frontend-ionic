@@ -32,15 +32,17 @@ export class RecipesService {
     public loadingController: LoadingController
   ) { }
 
-  async getRecipes(user) {
+  async getRecipes(user: string, pageNumber: number, pageSize: number, isFresh: boolean) {
     const loading = await this.loadingController.create({
       spinner: "dots",
       message: '',
       translucent: true,
       cssClass: 'custom-class custom-loading'
     });
-    await loading.present();
-    this.recipeDataService.getRecipes().subscribe(data => {
+    if (isFresh) {
+      await loading.present();
+    }
+    this.recipeDataService.getRecipes(pageNumber, pageSize).subscribe(data => {
       data.recipes.map(r => {
         if (r.creator.displayName === user) {
           r.creator.displayName = 'You';
@@ -48,7 +50,9 @@ export class RecipesService {
         this.recipes.next(data.recipes);
         this.totalRecipes.next(data.totalRecipes);
       });
-      loading.dismiss();
+      if (isFresh) {
+        loading.dismiss();
+      }
     });
   }
 
@@ -83,7 +87,7 @@ export class RecipesService {
       } else {
         this.modal.dismiss();
         this.isCreated.next(true);
-        this.getRecipes(user);
+        this.getRecipes(user, 1, 5, true);
       }
       loading.dismiss();
     });
@@ -101,7 +105,7 @@ export class RecipesService {
     this.recipeDataService.deleteRecipe(recipeId).subscribe(res => {
       this.router.navigate(['recipes']);
       this.isDeleted.next(res);
-      this.getRecipes(user);
+      this.getRecipes(user, 1, 5, true);
       loading.dismiss();
     });
   }

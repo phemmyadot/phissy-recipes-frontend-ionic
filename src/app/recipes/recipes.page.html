@@ -16,10 +16,10 @@
       <div *ngIf="totalRecipes == 0">
         <ion-label>No available recipe!</ion-label>
       </div>
-      <div>
-        <ion-col size-sm="4" *ngFor="let recipe of recipes | async">
+      <div id="recipe-page" class="recipe-page" (scroll)="onWindowScroll($event)">
+        <ion-col size-sm="4" *ngFor="let recipe of recipes | async" class="recipe-card">
           <ion-card>
-            <ion-card-header class="ion-no-padding" style="position: absolute; opacity: 0.8;width: 100%;">
+            <ion-card-header class="ion-no-padding card-heading">
               <ion-item lines=" none" button routerLink="/profile">
                 <ion-avatar slot="start">
                   <img [src]="recipe.creator.imageUrl">
@@ -30,13 +30,12 @@
                 </div>
               </ion-item>
             </ion-card-header>
-            <ion-img (click)="openRecipeDetail(recipe.id)" [src]="recipe.imageUrl"
-              style="height: 200px;object-fit: cover;">
+            <ion-img (click)="openRecipeDetail(recipe.id)" [src]="recipe.imageUrl" class="card-image">
             </ion-img>
             <ion-card-title class="ion-margin-horizontal ion-margin-top">{{ recipe.title }}</ion-card-title>
             <ion-card-content>
               <ion-text> {{ recipe.descriptionPreview }} </ion-text>
-              <div style="display: flex;">
+              <div class="interaction-btns">
                 <ion-button fill="none">
                   <ion-icon name="chatbubbles" slot="start"></ion-icon>
                   <ion-label>{{ recipe.commentsCount }}</ion-label>
@@ -49,10 +48,10 @@
             </ion-card-content>
           </ion-card>
         </ion-col>
+        <div *ngIf="showSpinner" class="spinner">
+          <ion-spinner name="dots"></ion-spinner>
+        </div>
       </div>
     </ion-row>
   </ion-grid>
-
-
-
 </ion-content>

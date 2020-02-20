@@ -87,11 +87,11 @@ export class RecipesWebDataService {
             }));
     }
 
-    getRecipes(): Observable<RecipeData> {
+    getRecipes(pageNumber: number, pageSize: number): Observable<RecipeData> {
 
         const graphqlQuery = {
             query: `{
-                recipes(page: 1) {
+                recipes(page: ${pageNumber}, perPage: ${pageSize}) {
                     recipes {
                         _id
                         title

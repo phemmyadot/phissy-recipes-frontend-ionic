@@ -9,6 +9,6 @@ export abstract class RecipesDataService {
 
     abstract getRecipe(recipeId: string): Observable<Recipe>;
     abstract deleteRecipe(recipeId: string): Observable<boolean>;
-    abstract getRecipes(): Observable<RecipeData>;
+    abstract getRecipes(pageNumber: number, pageSize: number): Observable<RecipeData>;
     abstract createRecipe(formData: any, Media: File, isEdit: boolean): Observable<boolean>;
 }

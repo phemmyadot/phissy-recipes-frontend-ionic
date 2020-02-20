@@ -12,7 +12,7 @@
     <ion-content>
       <ion-grid class="ion-no-padding">
         <ion-row *ngIf="errors.length !== 0">
-          <ion-col class="ion-no-padding ion-no-margin ion-margin-top ion-text-center" style="font-size: 11px;">
+          <ion-col class="ion-no-padding ion-no-margin ion-margin-top ion-text-center">
             <div *ngFor="let err of errors">
               <ion-text color="danger">{{ err.message }}</ion-text>
             </div>
@@ -61,7 +61,7 @@
 
                   </div>
                   <ion-col>
-                    <div style="display: flex; justify-content: space-between;">
+                    <div class="actions">
                       <ion-button class="ion-no-margin ion-padding-horizontal ion-text-uppercase" type="submit"
                         [disabled]="recipeForm.invalid || recipeForm.pristine">{{ isEdit ? 'Edit' : 'Create' }}
                       </ion-button>
