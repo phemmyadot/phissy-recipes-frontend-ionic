@@ -1,0 +1,6 @@
+{
+    "appId": "com.phissy.recipe.app",
+    "appName": "phissy-recipe-app",
+    "bundledWebRuntime": false,
+    "webDir": "www"
+}
