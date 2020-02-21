@@ -32,8 +32,11 @@ export class RecipesWebDataService {
                         description
                         imageUrl
                         imagePubicId
-                        likes
-                        comments
+                        likes {
+                            _id
+                            recipeId
+                            userId
+                        }
                         createdAt
                         updatedAt
                         creator {
@@ -63,9 +66,6 @@ export class RecipesWebDataService {
                     .forMember("likes", function (opts) {
                         opts.mapFrom("likes")
                     })
-                    .forMember("comments", function (opts) {
-                        opts.mapFrom("comments")
-                    })
                     .forMember("createdAt", function (opts) {
                         opts.mapFrom("createdAt")
                     })
@@ -80,8 +80,11 @@ export class RecipesWebDataService {
                 recipe.createdAtToString = this.dateService.formatToFullDate(moment(recipe.createdAt).toDate());
                 recipe.updatedAtToString = this.dateService.formatToFullDate(moment(recipe.updatedAt).toDate());
                 recipe.timeInterval = moment(moment(recipe.updatedAt).toDate()).fromNow();
-                recipe.likesCount = recipe.likes.length;
-                recipe.commentsCount = recipe.comments.length;
+                if (recipe.likes) {
+                    recipe.likesCount = recipe.likes.length;
+                } else {
+                    recipe.likesCount = 0;
+                }
 
                 return recipe;
             }));
@@ -98,11 +101,15 @@ export class RecipesWebDataService {
                         description
                         imageUrl
                         imagePubicId
-                        likes
-                        comments
+                        likes {
+                            _id
+                            recipeId
+                            userId
+                        }
                         createdAt
                         updatedAt
                         creator {
+                            _id
                             displayName
                             imageUrl
                         }
@@ -141,9 +148,6 @@ export class RecipesWebDataService {
                     .forMember("likes", function (opts) {
                         opts.mapFrom("likes")
                     })
-                    .forMember("comments", function (opts) {
-                        opts.mapFrom("comments")
-                    })
                     .forMember("createdAt", function (opts) {
                         opts.mapFrom("createdAt")
                     })
@@ -158,8 +162,11 @@ export class RecipesWebDataService {
                     recipe.createdAtToString = this.dateService.formatToFullDate(moment(recipe.createdAt).toDate());
                     recipe.updatedAtToString = this.dateService.formatToFullDate(moment(recipe.updatedAt).toDate());
                     recipe.timeInterval = moment(moment(recipe.updatedAt).toDate()).fromNow();
-                    recipe.likesCount = recipe.likes.length;
-                    recipe.commentsCount = recipe.comments.length;
+                    if (recipe.likes) {
+                        recipe.likesCount = recipe.likes.length;
+                    } else {
+                        recipe.likesCount = 0;
+                    }
                     recipe.descriptionPreview = `${recipe.description.slice(0, 100)}...`;
                 })
                 recipesData.recipes = recipes;

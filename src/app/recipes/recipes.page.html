@@ -1,23 +1,19 @@
-<ion-content class="ion-padding-vertical">
-  <!-- <ion-fab vertical="top" horizontal="end" slot="fixed">
-    <ion-fab-button>
-      <ion-icon name="add"></ion-icon>
-    </ion-fab-button>
-  </ion-fab> -->
+<ion-content class="ion-padding-vertical" (ionScroll)="detectBottom($event)">
+  <!-- <ion-button (click)="toggleInfiniteScroll()" expand="block">
+    Toggle Infinite Scroll
+  </ion-button> -->
 
-  <!-- fab placed to the (vertical) center and end -->
   <ion-fab vertical="bottom" horizontal="end" slot="fixed" (click)="onCreateRecipe()">
     <ion-fab-button color="primary">
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
   </ion-fab>
   <ion-grid>
-    <ion-row>
+    <ion-row >
       <div *ngIf="totalRecipes == 0">
         <ion-label>No available recipe!</ion-label>
       </div>
-      <div id="recipe-page" class="recipe-page" (scroll)="onWindowScroll($event)">
-        <ion-col size-sm="4" *ngFor="let recipe of recipes | async" class="recipe-card">
+        <ion-col size-xs="12" size-md="6" size-lg="4" *ngFor="let recipe of recipes | async" class="recipe-card">
           <ion-card>
             <ion-card-header class="ion-no-padding card-heading">
               <ion-item lines=" none" button routerLink="/profile">
@@ -40,7 +36,7 @@
                   <ion-icon name="chatbubbles" slot="start"></ion-icon>
                   <ion-label>{{ recipe.commentsCount }}</ion-label>
                 </ion-button>
-                <ion-button fill="none">
+                <ion-button fill="none" (click)="like(recipe.id, recipe.creator._id)">
                   <ion-icon name="heart" slot="start"></ion-icon>
                   <ion-label>{{ recipe.likesCount }}</ion-label>
                 </ion-button>
@@ -51,7 +47,11 @@
         <div *ngIf="showSpinner" class="spinner">
           <ion-spinner name="dots"></ion-spinner>
         </div>
-      </div>
     </ion-row>
   </ion-grid>
+  <ion-infinite-scroll (ionInfinite)="loadData($event)">
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 </ion-content>

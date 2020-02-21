@@ -1,6 +1,6 @@
-import { Component, OnInit, OnDestroy, HostListener, Inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener, Inject, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { ModalController } from '@ionic/angular';
+import { ModalController, IonInfiniteScroll  } from '@ionic/angular';
 import { CreateRecipeComponent } from './create/create.component';
 import { Recipe } from '../core/models/recipe';
 import { User } from '../core/models/user';
@@ -22,9 +22,11 @@ export class RecipesPage implements OnInit, OnDestroy {
   user: User;
   pageNumber: number = 1;
   newPageSize: number;
-  pageSize: number = 3;
-  showSpinner: boolean;
-
+  pageSize: number = 10;
+  isLoading: boolean;
+  length: number = 0;
+  
+  @ViewChild(IonInfiniteScroll, {static: false}) infiniteScroll: IonInfiniteScroll;
   @Select(AppState.getUserProfile) userProfile$: Observable<User>;
 
   constructor(
@@ -44,6 +46,9 @@ export class RecipesPage implements OnInit, OnDestroy {
     this.router.navigate(['recipes', 'detail', id]);
   }
 
+  like (id, userId) {
+    console.log(id, userId);
+  }
 
   async ionViewWillEnter() {
     this.authService.showHeader(true);
@@ -69,21 +74,24 @@ export class RecipesPage implements OnInit, OnDestroy {
 
   ngOnDestroy() {
   }
-  async onWindowScroll(e) {
-      if (this.newPageSize < this.totalRecipes) {
-        this.showSpinner = true;
-        setTimeout(() => {
-          const x = e.target.scrollTop;
-          let pos = e.target.scrollTop + e.target.offsetHeight;
-          let max = e.target.scrollHeight;
-          if(pos == max )   {
-            this.newPageSize += 1;
-            this.recipeService.getRecipes(this.user.displayName, this.pageNumber, this.newPageSize, false).then(res => {
-              this.showSpinner = false;
-              e.target.scrollTop = x - 100;
-            });
-          }
-        }, 1000);
+  loadData(event) {
+    this.isLoading = true;
+    setTimeout(() => {
+      this.newPageSize += 1;
+      this.length = 0;
+      if (this.length < this.totalRecipes) {
+        console.log('Loading data...');
+        this.recipeService.getRecipes(this.user.displayName, this.pageNumber, this.newPageSize, false).then(res => {
+          this.length++;
+        });
+        this.infiniteScroll.complete();
+        console.log('Done');
+      } else {
+        console.log('No More Data');
+        this.infiniteScroll.disabled = true;
       }
+    }, 500);
+    this.isLoading = false;
   }
+
 }

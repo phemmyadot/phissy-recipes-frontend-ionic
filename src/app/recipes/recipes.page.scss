@@ -1,22 +1,20 @@
-.recipe-page {
-    overflow-y: scroll;
-    height: calc(100vh - 106px);
-    .recipe-card {
-        .card-heading{
-            position: absolute; 
-            opacity: 0.8;
-            width: 100%;
-        }
-        .card-image {
-            height: 12.5rem;
-            object-fit: cover;
-        }
-        .interaction-btns {
-            display: flex;
-        }
+
+.recipe-card {
+    text-align: left;
+    .card-heading{
+        position: absolute; 
+        opacity: 0.8;
+        width: 100%;
     }
-    .spinner {
-        display: flex;;
-        justify-content: center;
+    .card-image {
+        height: 12.5rem;
+        object-fit: cover;
     }
+    .interaction-btns {
+        display: flex;
+    }
+}
+.spinner {
+    display: flex;;
+    justify-content: center;
 }
