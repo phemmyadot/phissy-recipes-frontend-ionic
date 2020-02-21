@@ -46,10 +46,6 @@ export class RecipesPage implements OnInit, OnDestroy {
     this.router.navigate(['recipes', 'detail', id]);
   }
 
-  like (id, userId) {
-    console.log(id, userId);
-  }
-
   async ionViewWillEnter() {
     this.authService.showHeader(true);
     await this.userProfile$.subscribe(user => {
@@ -70,6 +66,12 @@ export class RecipesPage implements OnInit, OnDestroy {
     this.modal.create({ component: CreateRecipeComponent }).then(modalEl => {
       modalEl.present();
     });
+  }
+
+  like (id, userId) {
+    this.recipeService.likeRecipe(id, userId).subscribe(res => {
+      this.recipeService.getRecipes(this.user.displayName, this.pageNumber, this.pageSize, false);
+  });
   }
 
   ngOnDestroy() {

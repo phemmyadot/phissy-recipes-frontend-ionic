@@ -47,9 +47,12 @@ export class RecipesService {
         if (r.creator.displayName === user) {
           r.creator.displayName = 'You';
         }
-        this.recipes.next(data.recipes);
-        this.totalRecipes.next(data.totalRecipes);
+        const x = r.likes.find(x => x.userId === r.creator._id);
+        if (x) r.isLiked = true;
       });
+      console.log(data.recipes);
+      this.recipes.next(data.recipes);
+      this.totalRecipes.next(data.totalRecipes);
       if (isFresh) {
         loading.dismiss();
       }
@@ -108,5 +111,9 @@ export class RecipesService {
       this.getRecipes(user, 1, 5, true);
       loading.dismiss();
     });
+  }
+  
+  likeRecipe(recipeId: string, userId: string) {
+    return this.recipeDataService.likeRecipe(recipeId, userId);
   }
 }

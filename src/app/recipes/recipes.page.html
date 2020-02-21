@@ -5,7 +5,7 @@
 
   <ion-fab vertical="bottom" horizontal="end" slot="fixed" (click)="onCreateRecipe()">
     <ion-fab-button color="primary">
-      <ion-icon name="add"></ion-icon>
+      <ion-icon name="add" class="white-icon"></ion-icon>
     </ion-fab-button>
   </ion-fab>
   <ion-grid>
@@ -33,11 +33,13 @@
               <ion-text> {{ recipe.descriptionPreview }} </ion-text>
               <div class="interaction-btns">
                 <ion-button fill="none">
-                  <ion-icon name="chatbubbles" slot="start"></ion-icon>
+                  <ion-icon name="chatbubble-ellipses-outline" slot="start"></ion-icon>
+                  <!-- <ion-icon name="chatbubbles" slot="start"></ion-icon> -->
                   <ion-label>{{ recipe.commentsCount }}</ion-label>
                 </ion-button>
                 <ion-button fill="none" (click)="like(recipe.id, recipe.creator._id)">
-                  <ion-icon name="heart" slot="start"></ion-icon>
+                  <ion-icon name="heart" slot="start" *ngIf="recipe.isLiked"></ion-icon>
+                  <ion-icon name="heart-outline" slot="start" *ngIf="!recipe.isLiked"></ion-icon>
                   <ion-label>{{ recipe.likesCount }}</ion-label>
                 </ion-button>
               </div>

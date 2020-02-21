@@ -21,4 +21,5 @@ export class Recipe {
     timeInterval?: any;
     creator?: User;
     publicId?: string;
+    isLiked: boolean;
 }

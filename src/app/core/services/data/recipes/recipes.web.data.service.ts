@@ -248,4 +248,20 @@ export class RecipesWebDataService {
 
         return this.httpClient.post<boolean>(environment.baseUrl, graphqlQuery);
     }
+
+    likeRecipe(recipeId: string, userId: string): Observable<any> {
+        const graphqlQuery =
+        {
+            query: `
+                mutation {
+                    likeRecipe(recipeId: "${recipeId}", userId: "${userId}") {
+                    _id
+                    recipeId
+                    userId
+                    }
+                }`
+        }
+
+        return this.httpClient.post<any>(environment.baseUrl, graphqlQuery);
+    }
 }
