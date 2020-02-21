@@ -161,7 +161,7 @@ export class RecipesWebDataService {
                 recipes.forEach(recipe => {
                     recipe.createdAtToString = this.dateService.formatToFullDate(moment(recipe.createdAt).toDate());
                     recipe.updatedAtToString = this.dateService.formatToFullDate(moment(recipe.updatedAt).toDate());
-                    recipe.timeInterval = moment(moment(recipe.updatedAt).toDate()).fromNow();
+                    recipe.timeInterval = moment(moment(recipe.createdAt).toDate()).fromNow();
                     if (recipe.likes) {
                         recipe.likesCount = recipe.likes.length;
                     } else {
