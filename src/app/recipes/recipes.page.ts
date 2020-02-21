@@ -80,7 +80,7 @@ export class RecipesPage implements OnInit, OnDestroy {
     this.isLoading = true;
     setTimeout(() => {
       this.newPageSize += 1;
-      this.length = 0;
+      // this.length = 0;
       if (this.length < this.totalRecipes) {
         console.log('Loading data...');
         this.recipeService.getRecipes(this.user.displayName, this.pageNumber, this.newPageSize, false).then(res => {

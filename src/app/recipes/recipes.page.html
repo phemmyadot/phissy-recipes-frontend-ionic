@@ -51,7 +51,7 @@
         </div>
     </ion-row>
   </ion-grid>
-  <ion-infinite-scroll (ionInfinite)="loadData($event)">
+  <ion-infinite-scroll (ionInfinite)="loadData($event)" *ngIf="length < totalRecipes">
     <ion-infinite-scroll-content
       loadingSpinner="bubbles">
     </ion-infinite-scroll-content>
