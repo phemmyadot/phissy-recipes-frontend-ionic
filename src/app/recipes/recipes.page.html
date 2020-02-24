@@ -1,4 +1,4 @@
-<ion-content class="ion-padding-vertical" (ionScroll)="detectBottom($event)">
+<ion-content class="ion-padding-vertical">
   <!-- <ion-button (click)="toggleInfiniteScroll()" expand="block">
     Toggle Infinite Scroll
   </ion-button> -->
@@ -46,9 +46,9 @@
             </ion-card-content>
           </ion-card>
         </ion-col>
-        <div *ngIf="showSpinner" class="spinner">
+       <!-- <div *ngIf="showSpinner" class="spinner">
           <ion-spinner name="dots"></ion-spinner>
-        </div>
+        </div>-->
     </ion-row>
   </ion-grid>
   <ion-infinite-scroll (ionInfinite)="loadData($event)" *ngIf="length < totalRecipes">
