@@ -114,7 +114,6 @@ export class RecipesService {
     this.recipeDataService.deleteRecipe(recipeId).subscribe(res => {
       this.router.navigate(['recipes']);
       this.isDeleted.next(res);
-      this.getRecipes(user, 1, 5, true);
       loading.dismiss();
     });
   }
@@ -159,11 +158,6 @@ export class RecipesService {
       if (status === 0) {
         this.recipesData.splice(0, 0, recipe);
       } else {
-        // this.recipesData.forEach(r => {
-        //   if (r.id === recipe._id) {
-        //     r = recipe;
-        //   }
-        // });
         const i = this.recipesData.findIndex(r => r.id == recipe._id);
         this.recipesData[i] = recipe;
       }
@@ -172,5 +166,9 @@ export class RecipesService {
       this.recipes.next(this.recipesData);
   }
 
+  deleteRecipeSock(id) {
+    const recipes = this.recipesData.filter(r => r.id !== id);
+    this.recipes.next(recipes);
+  }
 }
 

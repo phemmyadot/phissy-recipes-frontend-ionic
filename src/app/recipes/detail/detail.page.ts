@@ -7,7 +7,7 @@ import { Observable, Subject } from 'rxjs';
 import { Recipe } from 'src/app/core/models/recipe';
 import { User } from 'src/app/core/models/user';
 import { RecipesService } from 'src/app/core/services/business/recipes/recipes.service';
-import { ModalController } from '@ionic/angular';
+import { ModalController, AlertController } from '@ionic/angular';
 import { CreateRecipeComponent } from '../create/create.component';
 
 @Component({
@@ -32,7 +32,8 @@ export class DetailPage implements OnInit, OnDestroy {
     private store: Store,
     private router: Router,
     private recipeService: RecipesService,
-    private modal: ModalController, ) {
+    private modal: ModalController, 
+    public alertController: AlertController) {
     this.recipe = this.recipeService.recipe;
     this.route.params.subscribe(params => {
       this.recipeId = params.id;
@@ -71,14 +72,37 @@ export class DetailPage implements OnInit, OnDestroy {
     // this.store.dispatch(new ClearRecipe());
   }
 
-  onDelete() {
-    this.recipeService.deleteRecipe(this.recipeId, this.creator.displayName);
-  }
+  // onDelete() {
+  //  
+  // }
 
   onEdit() {
     this.modal.create({ component: CreateRecipeComponent, componentProps: { recipe: this.recipeObj } }).then(modalEl => {
       modalEl.present();
     });
+  }
+
+  async onDelete() {
+    const alert = await this.alertController.create({
+      header: 'Confirm!',
+      message: 'Are you sure you want to delete?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: (blah) => {
+            console.log('Confirm Cancel', blah);
+          }
+        }, {
+          text: 'Proceed',
+          handler: () => {
+            this.recipeService.deleteRecipe(this.recipeId, this.creator.displayName);
+          }
+        }
+      ]
+    }); 
+    await alert.present();
   }
 
 }

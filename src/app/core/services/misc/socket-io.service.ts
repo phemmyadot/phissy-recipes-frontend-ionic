@@ -18,6 +18,9 @@ export class SocketioService {
             if (data.action === 'editRecipe') {
                 this.recipesService.updateRecipe(data.recipe, 1);
             }
+            if (data.action === 'deleteRecipe') {
+                this.recipesService.deleteRecipeSock(data.recipeId);
+            }
         });
     }
   }
