@@ -43,7 +43,7 @@
           </ion-col>
         </ion-row>
       </ion-col>
-      <ion-col class="actions">
+      <ion-col class="actions" *ngIf="showActions">
         <ion-button color="danger" fill="outline" class="action-btn" size="small"
           (click)="onDelete()">
           <ion-icon name="trash"></ion-icon>

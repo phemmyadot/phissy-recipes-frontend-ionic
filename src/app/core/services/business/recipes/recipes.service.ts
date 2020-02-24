@@ -9,16 +9,21 @@ import { Router } from '@angular/router';
   providedIn: 'root'
 })
 export class RecipesService {
-
   recipe = new Subject<Recipe>();
   recipes = new Subject<Recipe[]>();
+  recipesData: Recipe[];
   totalRecipes = new Subject<number>();
   isDeleted = new Subject<boolean>();
   isCreated = new Subject<boolean>();
   isEdited = new Subject<boolean>();
+  userId: string;
 
   getTotalRecipes(): Observable<number> {
     return this.totalRecipes.asObservable();
+  }
+
+  getRecipesObs(): Observable<Recipe[]> {
+    return this.recipes.asObservable();
   }
 
   getRecipeObs(): Observable<Recipe> {
@@ -33,6 +38,7 @@ export class RecipesService {
   ) { }
 
   async getRecipes(user: string, pageNumber: number, pageSize: number, isFresh: boolean) {
+    this.userId = user;
     const loading = await this.loadingController.create({
       spinner: "dots",
       message: '',
@@ -44,13 +50,14 @@ export class RecipesService {
     }
     this.recipeDataService.getRecipes(pageNumber, pageSize).subscribe(data => {
       data.recipes.map(r => {
-        if (r.creator.displayName === user) {
+        if (r.creator._id === user) {
           r.creator.displayName = 'You';
         }
-        const x = r.likes.find(x => x.userId === r.creator._id);
+        const x = r.likes.find(x => x.userId === user);
         if (x) r.isLiked = true;
       });
       console.log(data.recipes);
+      this.recipesData = data.recipes;
       this.recipes.next(data.recipes);
       this.totalRecipes.next(data.totalRecipes);
       if (isFresh) {
@@ -90,7 +97,6 @@ export class RecipesService {
       } else {
         this.modal.dismiss();
         this.isCreated.next(true);
-        this.getRecipes(user, 1, 5, true);
       }
       loading.dismiss();
     });
@@ -114,6 +120,57 @@ export class RecipesService {
   }
   
   likeRecipe(recipeId: string, userId: string) {
-    return this.recipeDataService.likeRecipe(recipeId, userId);
+    this.recipeDataService.likeRecipe(recipeId, userId);
   }
+
+
+
+  likeSocket(recipe, status, user, likeId) {
+    const like = {
+      _id: likeId, 
+      recipeId: recipe._id,
+      userId: user
+    }
+    this.recipesData.map(r => {
+      if (r.id === recipe._id && status === 1) {
+        r.likes.push(like);
+        r.likesCount += 1;
+        const x = r.likes.find(x => x.userId === this.userId);
+        if (x) r.isLiked = true;
+      } else if (r.id === recipe._id && status === 0) {
+        const newRecipe = r.likes.filter(x => x._id !== likeId);
+        r.likes = newRecipe;
+        r.likesCount -= 1;
+        const x = r.likes.find(x => x.userId === this.userId);
+        if (!x) r.isLiked = false;
+      }
+    });
+    console.log(this.recipesData);
+    this.recipes.next(this.recipesData);
+  }
+
+  updateRecipe(recipe, status) {
+      if (recipe.creator._id === this.userId) {
+        recipe.creator.displayName = 'You';
+      }
+      recipe.id = recipe._id;
+      const x = recipe.likes.find(x => x.userId === this.userId);
+      if (x) recipe.isLiked = true;
+      if (status === 0) {
+        this.recipesData.splice(0, 0, recipe);
+      } else {
+        // this.recipesData.forEach(r => {
+        //   if (r.id === recipe._id) {
+        //     r = recipe;
+        //   }
+        // });
+        const i = this.recipesData.findIndex(r => r.id == recipe._id);
+        this.recipesData[i] = recipe;
+      }
+      console.log(this.recipesData)
+      this.totalRecipes.next(this.recipesData.length);
+      this.recipes.next(this.recipesData);
+  }
+
 }
+

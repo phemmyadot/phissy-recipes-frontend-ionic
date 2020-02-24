@@ -11,5 +11,5 @@ export abstract class RecipesDataService {
     abstract deleteRecipe(recipeId: string): Observable<boolean>;
     abstract getRecipes(pageNumber: number, pageSize: number): Observable<RecipeData>;
     abstract createRecipe(formData: any, Media: File, isEdit: boolean): Observable<boolean>;
-    abstract likeRecipe(recipeId: string, userId: string): Observable<any>;
+    abstract likeRecipe(recipeId: string, userId: string);
 }

@@ -35,12 +35,12 @@
                 <ion-button fill="none">
                   <ion-icon name="chatbubble-ellipses-outline" slot="start"></ion-icon>
                   <!-- <ion-icon name="chatbubbles" slot="start"></ion-icon> -->
-                  <ion-label>{{ recipe.commentsCount }}</ion-label>
+                  <ion-label>0</ion-label>
                 </ion-button>
-                <ion-button fill="none" (click)="like(recipe.id, recipe.creator._id)">
+                <ion-button fill="none" (click)="like(recipe.id)">
                   <ion-icon name="heart" slot="start" *ngIf="recipe.isLiked"></ion-icon>
                   <ion-icon name="heart-outline" slot="start" *ngIf="!recipe.isLiked"></ion-icon>
-                  <ion-label>{{ recipe.likesCount }}</ion-label>
+                  <ion-label>{{ recipe.likes.length }}</ion-label>
                 </ion-button>
               </div>
             </ion-card-content>

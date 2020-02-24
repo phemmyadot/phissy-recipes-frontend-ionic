@@ -9,6 +9,7 @@ import { Select } from '@ngxs/store';
 import { AppState } from './state/app.state';
 import { Observable } from 'rxjs';
 import { User } from './core/models/user';
+import { SocketioService } from './core/services/misc/socket-io.service';
 
 @Component({
   selector: 'app-root',
@@ -20,12 +21,14 @@ export class AppComponent implements OnInit {
   @Select(AppState.getUserProfile) user$: Observable<User>;
 
   user: User;
+
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private socketService: SocketioService
   ) {
     this.initializeApp();
   }
@@ -39,7 +42,8 @@ export class AppComponent implements OnInit {
     });
     this.user$.subscribe(user => {
       this.user = user;
-    })
+    });
+    this.socketService.setupSocketConnection();
   }
 
   initializeApp() {

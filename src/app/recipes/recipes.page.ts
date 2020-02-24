@@ -51,7 +51,7 @@ export class RecipesPage implements OnInit, OnDestroy {
     await this.userProfile$.subscribe(user => {
       this.user = user;
     });
-    this.recipeService.getRecipes(this.user.displayName, this.pageNumber, this.pageSize, true);
+    this.recipeService.getRecipes(this.user._id, this.pageNumber, this.pageSize, true);
     this.recipes = this.recipeService.recipes;
     this.recipeService.getTotalRecipes().subscribe(total => {
       this.totalRecipes = total;
@@ -68,10 +68,8 @@ export class RecipesPage implements OnInit, OnDestroy {
     });
   }
 
-  like (id, userId) {
-    this.recipeService.likeRecipe(id, userId).subscribe(res => {
-      this.recipeService.getRecipes(this.user.displayName, this.pageNumber, this.pageSize, false);
-  });
+  like (id) {
+    this.recipeService.likeRecipe(id, this.user._id);
   }
 
   ngOnDestroy() {
@@ -83,7 +81,7 @@ export class RecipesPage implements OnInit, OnDestroy {
       // this.length = 0;
       if (this.length < this.totalRecipes) {
         console.log('Loading data...');
-        this.recipeService.getRecipes(this.user.displayName, this.pageNumber, this.newPageSize, false).then(res => {
+        this.recipeService.getRecipes(this.user._id, this.pageNumber, this.newPageSize, false).then(res => {
           this.length++;
         });
         this.infiniteScroll.complete();

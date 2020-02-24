@@ -24,6 +24,7 @@ import { ErrorInterceptorService } from './core/services/misc/error-interceptor.
 import { RecipesService } from './core/services/business/recipes/recipes.service';
 import { RecipesDataService } from './core/services/data/recipes/recipes.data.service';
 import { RecipesWebDataService } from './core/services/data/recipes/recipes.web.data.service';
+import { SocketioService } from './core/services/misc/socket-io.service';
 
 @NgModule({
   declarations: [
@@ -48,6 +49,7 @@ import { RecipesWebDataService } from './core/services/data/recipes/recipes.web.
     DateService,
     RecipesService,
     AuthService,
+    SocketioService,
     { provide: RecipesDataService, useClass: RecipesWebDataService },
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     { provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true },

@@ -22,6 +22,11 @@ export class DetailPage implements OnInit, OnDestroy {
   recipe: Subject<Recipe>;
   creator: User;
   recipeObj: Recipe;
+  user: User;
+  showActions: boolean;
+
+  @Select(AppState.getUserProfile) userProfile$: Observable<User>;
+
   constructor(private authService: AuthService,
     private route: ActivatedRoute,
     private store: Store,
@@ -38,6 +43,14 @@ export class DetailPage implements OnInit, OnDestroy {
       this.recipeObj = recipe;
       this.recipeId = recipe.id;
       this.creator = recipe.creator;
+      this.userProfile$.subscribe(user => {
+        this.user = user;
+        if (this.user._id === recipe.creator._id) {
+          this.showActions = true;
+        } else { 
+          this.showActions = false;
+        }
+      });
     });
   }
 
@@ -51,6 +64,7 @@ export class DetailPage implements OnInit, OnDestroy {
 
   ionViewWillEnter() {
     this.authService.showHeader(false);
+    
   }
 
   ngOnDestroy() {
