@@ -74,8 +74,11 @@ export class RecipesService {
       cssClass: 'custom-class custom-loading'
     });
     await loading.present();
-    this.recipeDataService.getRecipe(recipeId).subscribe(data => {
-      this.recipe.next(data);
+    this.recipeDataService.getRecipe(recipeId).subscribe(r => {
+      if (r.creator._id === this.userId) {
+        r.creator.displayName = 'You';
+      }
+      this.recipe.next(r);
       loading.dismiss();
     });
   }
