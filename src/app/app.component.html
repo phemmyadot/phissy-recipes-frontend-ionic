@@ -15,12 +15,10 @@
               <ion-label>Profile</ion-label>
             </ion-item>
           </ion-menu-toggle>
-          <ion-menu-toggle>
             <ion-item lines="none">
-              <ion-toggle slot="start"></ion-toggle>
+              <ion-toggle slot="start" color="primary"  (ionChange)="toggleMode($event)" [checked]="isDark"></ion-toggle>
               <ion-label>Dark Mode</ion-label>
             </ion-item>
-          </ion-menu-toggle>
           <ion-menu-toggle>
             <ion-item lines="none" (click)="logout()" button>
               <ion-icon name="exit" slot="start"></ion-icon>

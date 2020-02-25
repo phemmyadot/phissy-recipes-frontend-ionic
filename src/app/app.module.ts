@@ -25,6 +25,7 @@ import { RecipesService } from './core/services/business/recipes/recipes.service
 import { RecipesDataService } from './core/services/data/recipes/recipes.data.service';
 import { RecipesWebDataService } from './core/services/data/recipes/recipes.web.data.service';
 import { SocketioService } from './core/services/misc/socket-io.service';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 @NgModule({
   declarations: [
@@ -55,6 +56,7 @@ import { SocketioService } from './core/services/misc/socket-io.service';
     { provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptorService, multi: true }
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
 })
 export class AppModule { }

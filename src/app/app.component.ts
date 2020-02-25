@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 
 import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
@@ -16,11 +16,13 @@ import { SocketioService } from './core/services/misc/socket-io.service';
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss']
 })
+
 export class AppComponent implements OnInit {
 
   @Select(AppState.getUserProfile) user$: Observable<User>;
 
   user: User;
+  isDark: any;
 
   constructor(
     private platform: Platform,
@@ -28,7 +30,8 @@ export class AppComponent implements OnInit {
     private statusBar: StatusBar,
     private authService: AuthService,
     private router: Router,
-    private socketService: SocketioService
+    private socketService: SocketioService,
+    // @Inject(DOCUMENT) private document: Document
   ) {
     this.initializeApp();
   }
@@ -44,6 +47,10 @@ export class AppComponent implements OnInit {
       this.user = user;
     });
     this.socketService.setupSocketConnection();
+    if(localStorage.getItem('isDark')) {
+      this.isDark = localStorage.getItem('isDark') === 'true'? true : false;
+    }
+    this.changeMode(this.isDark);
   }
 
   initializeApp() {
@@ -59,5 +66,18 @@ export class AppComponent implements OnInit {
 
   openProfile() {
     this.router.navigate(['profile', 'info', this.user._id]);
+  }
+
+  toggleMode(evt) {
+    this.changeMode(evt.detail.checked);
+    localStorage.setItem('isDark', evt.detail.checked);
+  }
+  changeMode(checked) {
+    console.log(checked)
+    if(checked) {
+      document.body.classList.add('dark');
+    } else {
+      document.body.classList.remove('dark');
+    }
   }
 }
