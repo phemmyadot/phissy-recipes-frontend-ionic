@@ -67,6 +67,10 @@ export class AuthPage implements OnInit {
     this.loginForm.reset();
   }
 
+  ionViewWillLeave()  {
+    this.authErrors = [];
+  }
+
   routeToSignup() {
     this.router.navigateByUrl('/signup');
   }

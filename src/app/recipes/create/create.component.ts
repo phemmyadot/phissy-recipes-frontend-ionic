@@ -67,6 +67,7 @@ export class CreateRecipeComponent implements OnInit {
 
   ionViewDidLeave() {
     this.recipeForm.reset();
+    this.errors = [];
   }
 
   onImagePicked(event) {

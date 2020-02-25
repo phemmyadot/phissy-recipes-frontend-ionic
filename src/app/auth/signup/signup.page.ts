@@ -50,6 +50,10 @@ export class SignupPage implements OnInit {
     this.authService.showHeader(false);
   }
 
+  ionViewWillLeave()  {
+    this.authErrors = [];
+  }
+
   async onSignup() {
     const loading = await this.loadingController.create({
       spinner: "dots",
