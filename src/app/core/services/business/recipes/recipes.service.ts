@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { RecipesDataService } from '../../data/recipes/recipes.data.service';
 import { Recipe, RecipeData } from 'src/app/core/models/recipe';
 import { Subject, Observable } from 'rxjs';
-import { ModalController, LoadingController } from '@ionic/angular';
+import { ModalController, LoadingController, ToastController } from '@ionic/angular';
 import { Router } from '@angular/router';
 
 @Injectable({
@@ -34,7 +34,8 @@ export class RecipesService {
     private recipeDataService: RecipesDataService,
     private modal: ModalController,
     private router: Router,
-    public loadingController: LoadingController
+    public loadingController: LoadingController,
+    public toastController: ToastController
   ) { }
 
   async getRecipes(user: string, pageNumber: number, pageSize: number, isFresh: boolean) {
@@ -101,6 +102,7 @@ export class RecipesService {
         this.modal.dismiss();
         this.isCreated.next(true);
       }
+      this.presentToast('Recipe has been successfully created.');
       loading.dismiss();
     });
 
@@ -115,8 +117,8 @@ export class RecipesService {
     });
     await loading.present();
     this.recipeDataService.deleteRecipe(recipeId).subscribe(res => {
-      this.router.navigate(['recipes']);
       this.isDeleted.next(res);
+      this.router.navigate(['recipes']);
       loading.dismiss();
     });
   }
@@ -139,12 +141,14 @@ export class RecipesService {
         r.likesCount += 1;
         const x = r.likes.find(x => x.userId === this.userId);
         if (x) r.isLiked = true;
+        this.presentToast(`Your liked ${r.title}`);
       } else if (r.id === recipe._id && status === 0) {
         const newRecipe = r.likes.filter(x => x._id !== likeId);
         r.likes = newRecipe;
         r.likesCount -= 1;
         const x = r.likes.find(x => x.userId === this.userId);
         if (!x) r.isLiked = false;
+        this.presentToast(`Your disliked ${r.title}`);
       }
     });
     console.log(this.recipesData);
@@ -171,7 +175,17 @@ export class RecipesService {
 
   deleteRecipeSock(id) {
     const recipes = this.recipesData.filter(r => r.id !== id);
+      this.presentToast('Recipe has been successfully deleted.');
     this.recipes.next(recipes);
+  }
+
+  async presentToast(message) {
+    const toast = await this.toastController.create({
+      message: message,
+      duration: 2000,
+      color: "primary"
+    });
+    toast.present();
   }
 }
 

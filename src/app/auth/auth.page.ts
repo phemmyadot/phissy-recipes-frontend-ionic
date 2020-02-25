@@ -5,7 +5,7 @@ import { AuthService } from '../core/services/misc/auth.service';
 import { Subject } from 'rxjs';
 import { Store } from '@ngxs/store';
 import { SetUserData } from '../state/app.action';
-import { LoadingController } from '@ionic/angular';
+import { LoadingController, ToastController } from '@ionic/angular';
 import { ErrorInterceptorService } from '../core/services/misc/error-interceptor.service';
 
 @Component({
@@ -24,7 +24,7 @@ export class AuthPage implements OnInit {
     private router: Router,
     private store: Store,
     public loadingController: LoadingController,
-    private errorService: ErrorInterceptorService
+    public toastController: ToastController
   ) { }
 
   ngOnInit() {
@@ -50,6 +50,7 @@ export class AuthPage implements OnInit {
     });
     await loading.present();
     this.authService.login(this.loginForm.value).subscribe(res => {
+      this.presentToast(res.data.login.user.displayName);
       this.store.dispatch(new SetUserData(res.data.login.user));
       this.loginForm.reset();
       this.router.navigateByUrl('/');
@@ -77,6 +78,15 @@ export class AuthPage implements OnInit {
 
   forgetPassword() {
 
+  }
+
+  async presentToast(user) {
+    const toast = await this.toastController.create({
+      message: `Welcome ${user}`,
+      duration: 2000,
+      color: "primary"
+    });
+    toast.present();
   }
 
   get email() {

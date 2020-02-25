@@ -3,7 +3,7 @@ import { AuthService } from 'src/app/core/services/misc/auth.service';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MustMatch } from './confirmPassword';
-import { LoadingController } from '@ionic/angular';
+import { LoadingController, ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-signup',
@@ -24,7 +24,8 @@ export class SignupPage implements OnInit {
     private authService: AuthService,
     private router: Router,
     private formBuilder: FormBuilder,
-    public loadingController: LoadingController
+    public loadingController: LoadingController,
+    public toastController: ToastController
   ) { }
 
   ngOnInit() {
@@ -64,6 +65,7 @@ export class SignupPage implements OnInit {
     await loading.present();
     this.authService.signup(this.signupForm.value, this.signupForm.value.image).subscribe(res => {
       this.signupForm.reset();
+      this.presentToast();
       this.router.navigateByUrl('/auth');
       loading.dismiss();
     }, err => {
@@ -72,6 +74,15 @@ export class SignupPage implements OnInit {
         loading.dismiss();
       });
     });
+  }
+
+  async presentToast() {
+    const toast = await this.toastController.create({
+      message: 'Your account has been successfully created.',
+      duration: 2000,
+      color: "primary"
+    });
+    toast.present();
   }
 
   checkPasswords(controlName: string, matchingControlName: string, formGroup?: FormGroup) { // here we have the 'passwords' group
