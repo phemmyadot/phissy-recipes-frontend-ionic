@@ -13,9 +13,15 @@ IOS -
 
 Todo 
 - [x] Signup
+- [x] Login
+- [x] Authorization 
 - [x] Make Username and Email unique 
 - [x] Create Recipe
+- [x] Get Recipes row)
+- [x] Get RecipeById
 - [x] Recipe details - show edit and delete if user created
+- [x] Edit Recipe
+- [x] Delete Recipe
 - [x] Spinner/Loader
 - [x] Toast
 - [x] Cloudinary storage for upload 
