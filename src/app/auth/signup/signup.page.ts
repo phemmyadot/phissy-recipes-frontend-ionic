@@ -72,6 +72,7 @@ export class SignupPage implements OnInit {
       err.error.errors.forEach(err => {
         this.authErrors = err;
         loading.dismiss();
+        this.presentErrorToast(err[0].message)
       });
     });
   }
@@ -81,6 +82,15 @@ export class SignupPage implements OnInit {
       message: 'Your account has been successfully created.',
       duration: 2000,
       color: "primary"
+    });
+    toast.present();
+  }
+
+  async presentErrorToast(err) {
+    const toast = await this.toastController.create({
+      message: err,
+      duration: 2000,
+      color: "danger"
     });
     toast.present();
   }

@@ -64,6 +64,10 @@ export class RecipesService {
       if (isFresh) {
         loading.dismiss();
       }
+    }, err => {
+      loading.dismiss();
+      const error = err.message; 
+      this.presentErrorToast(error);
     });
   }
 
@@ -81,6 +85,10 @@ export class RecipesService {
       }
       this.recipe.next(r);
       loading.dismiss();
+    }, err => {
+      loading.dismiss();
+      const error = err.message; 
+      this.presentErrorToast(error);
     });
   }
 
@@ -104,6 +112,10 @@ export class RecipesService {
       }
       this.presentToast('Recipe has been successfully created.');
       loading.dismiss();
+    }, err => {
+      loading.dismiss();
+      const error = err.message; 
+      this.presentErrorToast(error);
     });
 
   }
@@ -120,6 +132,10 @@ export class RecipesService {
       this.isDeleted.next(res);
       this.router.navigate(['recipes']);
       loading.dismiss();
+    }, err => {
+      loading.dismiss();
+      const error = err.message; 
+      this.presentErrorToast(error);
     });
   }
   
@@ -184,6 +200,15 @@ export class RecipesService {
       message: message,
       duration: 2000,
       color: "primary"
+    });
+    toast.present();
+  }
+
+  async presentErrorToast(err) {
+    const toast = await this.toastController.create({
+      message: err,
+      duration: 2000,
+      color: "danger"
     });
     toast.present();
   }

@@ -50,15 +50,16 @@ export class AuthPage implements OnInit {
     });
     await loading.present();
     this.authService.login(this.loginForm.value).subscribe(res => {
-      this.presentToast(res.data.login.user.displayName);
       this.store.dispatch(new SetUserData(res.data.login.user));
       this.loginForm.reset();
-      this.router.navigateByUrl('/');
       loading.dismiss();
+      this.router.navigateByUrl('/');
+      this.presentToast(res.data.login.user.displayName);
     }, err => {
       console.log('Login Failed With ---->', err);
       this.authErrors = err;
       this.authErrorsLength = err.length;
+      this.presentErrorToast(err[0].message);
       loading.dismiss();
     });
   }
@@ -85,6 +86,14 @@ export class AuthPage implements OnInit {
       message: `Welcome ${user}`,
       duration: 2000,
       color: "primary"
+    });
+    toast.present();
+  }
+  async presentErrorToast(err) {
+    const toast = await this.toastController.create({
+      message: err,
+      duration: 2000,
+      color: "danger"
     });
     toast.present();
   }
