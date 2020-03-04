@@ -13,31 +13,35 @@ IOS:
 
 
 Tasks 
-- [x] Signup
-- [x] Make Username and Email unique 
-- [x] User - remove role
-- [x] Recipes - remove save
-- [x] Create Recipe
-- [x] Recipe details - show edit and delete if user created
-- [x] Spinner/Loader
-- [x] Toast
-- [x] Cloudinary storage for upload 
-- [x] Like
-- [x] Recipes - add Frontend pagination(show more)
-- [x] Web responsiveness
-- [x] Deploy web
-- [x] Build Android and IOS
-- [x] Environment Variables 
-- [x] Drag refresh
-- [ ] Error page
-- [ ] Video Player
-- [ ] Comment
-- [ ] Profile - show list of recipes created by user(2/row)
-- [ ] Uploading multiple media
-- [ ] Forget Password 
-- [ ] Email Verification
+  - [x] Signup
+  - [x] Make Username and Email unique 
+  - [x] Login
+  - [x] Get Recipes - Frontend Pagination(show more)
+  - [x] Create Recipe
+  - [x] Inputs Validation
+  - [x] Get Recipe By Id - Show/allow edit and delete only if user created
+  - [x] Delete Recipe
+  - [x] Update Recipe 
+  - [x] Spinner/Loader
+  - [x] Toast
+  - [x] Cloudinary Storage for Media Upload 
+  - [x] Like
+  - [x] Web Responsiveness
+  - [x] Deploy Web
+  - [x] Build Android and IOS
+  - [x] Environment Variables 
+  - [x] Drag Refresh
+  - [x] Recipes Bottom Page 'Load More'
+  - [ ] Error Page
+  - [ ] Video Player
+  - [ ] Video Upload - Add Limit
+  - [ ] Comment
+  - [ ] Profile - Show list of recipes created by user(2/row)
+  - [ ] Uploading Multiple media
+  - [ ] Forget Password 
+  - [ ] Email Verification
 
 Bugs
-- [ ] Changing only image in edit doesn’t validate form.
-- [ ] Null route
+  - [ ] Changing only image in edit doesn’t validate form.
+  - [ ] Null Route on initial load of signin page
 
