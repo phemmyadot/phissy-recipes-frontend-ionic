@@ -18,8 +18,8 @@
         </div>
           <ion-col size-xs="12" size-md="6" size-lg="4" *ngFor="let recipe of recipes | async" class="recipe-card">
             <ion-card>
-              <ion-card-header class="ion-no-padding card-heading">
-                <ion-item lines=" none" button routerLink="/profile">
+              <ion-card-header class="card-heading">
+                <ion-item lines="none" button routerLink="/profile" class="header-info">
                   <ion-avatar slot="start">
                     <img [src]="recipe.creator.imageUrl">
                   </ion-avatar>
