@@ -3,37 +3,45 @@ Built with Ionic 4
 
 Note; development s still in progress
 
-Web Demo (PWA) https://phissy-recipe-app.netlify.com/
+Backend Repo: https://github.com/phemmyadot/phissy-recipe-nodejs--mongodb-backend
 
-APK https://drive.google.com/file/d/115gA1x3q8XS2lPUFm5ga-ESBJ9XZKhwc/view?usp=sharing
+Web Demo: https://phissy-recipe-app.netlify.com/
 
-IOS -
+APK: https://drive.google.com/file/d/115gA1x3q8XS2lPUFm5ga-ESBJ9XZKhwc/view?usp=sharing
+
+IOS:
 
 
+Tasks 
+  - [x] Signup
+  - [x] Make Username and Email unique 
+  - [x] Login
+  - [x] Get Recipes - Frontend Pagination(show more)
+  - [x] Create Recipe
+  - [x] Inputs Validation
+  - [x] Get Recipe By Id - Show/allow edit and delete only if user created
+  - [x] Delete Recipe
+  - [x] Update Recipe 
+  - [x] Spinner/Loader
+  - [x] Toast
+  - [x] Cloudinary Storage for Media Upload 
+  - [x] Like
+  - [x] Web Responsiveness
+  - [x] Deploy Web
+  - [x] Build Android and IOS
+  - [x] Environment Variables 
+  - [x] Drag Refresh
+  - [x] Recipes Bottom Page 'Load More'
+  - [ ] Error Page
+  - [ ] Video Player
+  - [ ] Video Upload - Add Limit
+  - [ ] Comment
+  - [ ] Profile - Show list of recipes created by user(2/row)
+  - [ ] Uploading Multiple media
+  - [ ] Forget Password 
+  - [ ] Email Verification
 
-Todo 
-- [x] Signup
-- [x] Login
-- [x] Authorization 
-- [x] Make Username and Email unique 
-- [x] Create Recipe
-- [x] Get Recipes row)
-- [x] Get RecipeById
-- [x] Recipe details - show edit and delete if user created
-- [x] Edit Recipe
-- [x] Delete Recipe
-- [x] Spinner/Loader
-- [x] Toast
-- [x] Cloudinary storage for upload 
-- [x] Like
-- [x] Recipes - add Frontend pagination(load more at bottom)
-- [x] Web responsiveness
-- [x] Automated deployment of web
-- [x] Dark Mode
-- [ ] Build Native
-- [ ] Error page
-- [ ] Video Player
-- [ ] Comment
-- [ ] Profile - show list of recipes created by user(2/row)
-- [ ] Uploading multiple media
-- [ ] Drag to refresh
+Bugs
+  - [ ] Changing only image in edit doesn’t validate form.
+  - [ ] Null Route on initial load of signin page
+
