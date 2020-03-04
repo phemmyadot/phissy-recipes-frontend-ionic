@@ -1,7 +1,7 @@
 <ion-app>
   <app-header></app-header>
   <ion-content>
-    <ion-menu side="start" menuId="userMenu" contentId="content">
+    <ion-menu side="end" menuId="userMenu" contentId="content">
       <!-- <ion-header>
         <ion-toolbar>
           <ion-title>User Menu</ion-title>
@@ -10,19 +10,21 @@
       <ion-content>
         <ion-list>
           <ion-menu-toggle>
-            <ion-item lines="none" (click)="openProfile()">
-              <ion-icon name="person" slot="start"></ion-icon>
-              <ion-label>Profile</ion-label>
+            <ion-item class="menu-item" lines="none" (click)="openProfile()">
+              <ion-icon class="menu-icon" name="person" slot="start"></ion-icon>
+              <ion-label class="menu-label">Profile</ion-label>
             </ion-item>
           </ion-menu-toggle>
-            <ion-item lines="none">
-              <ion-toggle slot="start" color="primary"  (ionChange)="toggleMode($event)" [checked]="isDark"></ion-toggle>
-              <ion-label>Dark Mode</ion-label>
+            <ion-item  class="menu-item" lines="none" (click)="toggleMode()">
+              <ion-icon name="color-fill-outline" *ngIf="!(isDark | async)" slot="start"></ion-icon>
+              <ion-icon name="color-fill" *ngIf="isDark | async" slot="start"></ion-icon>
+              <!-- <ion-toggle class="menu-icon" slot="start" color="primary"  (ionChange)="toggleMode($event)" [checked]="isDark"></ion-toggle> -->
+              <ion-label class="menu-label">Color Mode</ion-label>
             </ion-item>
           <ion-menu-toggle>
-            <ion-item lines="none" (click)="logout()" button>
-              <ion-icon name="exit" slot="start"></ion-icon>
-              <ion-label>Log Out</ion-label>
+            <ion-item  class="menu-item" lines="none" (click)="logout()" button>
+              <ion-icon class="menu-icon" name="exit" slot="start"></ion-icon>
+              <ion-label class="menu-label">Log Out</ion-label>
             </ion-item>
           </ion-menu-toggle>
         </ion-list>

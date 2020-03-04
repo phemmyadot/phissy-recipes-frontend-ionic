@@ -7,7 +7,7 @@ import { AuthService } from './core/services/misc/auth.service';
 import { Router } from '@angular/router';
 import { Select } from '@ngxs/store';
 import { AppState } from './state/app.state';
-import { Observable } from 'rxjs';
+import { Observable, Subject, of } from 'rxjs';
 import { User } from './core/models/user';
 import { SocketioService } from './core/services/misc/socket-io.service';
 
@@ -22,7 +22,7 @@ export class AppComponent implements OnInit {
   @Select(AppState.getUserProfile) user$: Observable<User>;
 
   user: User;
-  isDark: any;
+  isDark: Observable<any>;
 
   constructor(
     private platform: Platform,
@@ -48,9 +48,10 @@ export class AppComponent implements OnInit {
     });
     this.socketService.setupSocketConnection();
     if(localStorage.getItem('isDark')) {
-      this.isDark = localStorage.getItem('isDark') === 'true'? true : false;
+      const isDark = (localStorage.getItem('isDark') === 'true'? true : false);
+      this.isDark = of(isDark);
+      this.changeMode(isDark);
     }
-    this.changeMode(this.isDark);
   }
 
   initializeApp() {
@@ -68,9 +69,12 @@ export class AppComponent implements OnInit {
     this.router.navigate(['profile', 'info', this.user._id]);
   }
 
-  toggleMode(evt) {
-    this.changeMode(evt.detail.checked);
-    localStorage.setItem('isDark', evt.detail.checked);
+  toggleMode() {
+    this.isDark.subscribe(res => {
+      this.isDark = of(!res);
+      localStorage.setItem('isDark', `${!res}`);
+      this.changeMode(!res);
+    })
   }
   changeMode(checked) {
     console.log(checked)
