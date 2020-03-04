@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  baseUrl: 'https://phissy-node-app.herokuapp.com/graphql',
-  imageUploadUrl: 'https://phissy-node-app.herokuapp.com/post-image',
-  host: 'https://phissy-node-app.herokuapp.com'
+  baseUrl: 'GRAPHQL_BASE_URL',
+  imageUploadUrl: 'UPLOAD_BASE_URL',
+  host: 'HOST_BASE_URL'
 };
