@@ -8,50 +8,53 @@
       <ion-icon name="add" class="white-icon"></ion-icon>
     </ion-fab-button>
   </ion-fab>
-  <ion-grid>
-    <ion-row >
-      <div *ngIf="totalRecipes == 0">
-        <ion-label>No available recipe!</ion-label>
-      </div>
-        <ion-col size-xs="12" size-md="6" size-lg="4" *ngFor="let recipe of recipes | async" class="recipe-card">
-          <ion-card>
-            <ion-card-header class="ion-no-padding card-heading">
-              <ion-item lines=" none" button routerLink="/profile">
-                <ion-avatar slot="start">
-                  <img [src]="recipe.creator.imageUrl">
-                </ion-avatar>
-                <div>
-                  <ion-label>{{ recipe.creator.displayName }}</ion-label>
-                  <ion-text class="recipe-post-time">{{ recipe.timeInterval }}</ion-text>
+    <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+      <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
+    <ion-grid>
+      <ion-row >
+        <div *ngIf="totalRecipes == 0">
+          <ion-label>No available recipe!</ion-label>
+        </div>
+          <ion-col size-xs="12" size-md="6" size-lg="4" *ngFor="let recipe of recipes | async" class="recipe-card">
+            <ion-card>
+              <ion-card-header class="ion-no-padding card-heading">
+                <ion-item lines=" none" button routerLink="/profile">
+                  <ion-avatar slot="start">
+                    <img [src]="recipe.creator.imageUrl">
+                  </ion-avatar>
+                  <div>
+                    <ion-label>{{ recipe.creator.displayName }}</ion-label>
+                    <ion-text class="recipe-post-time">{{ recipe.timeInterval }}</ion-text>
+                  </div>
+                </ion-item>
+              </ion-card-header>
+              <ion-img (click)="openRecipeDetail(recipe.id)" [src]="recipe.imageUrl" class="card-image">
+              </ion-img>
+              <ion-card-title class="ion-margin-horizontal ion-margin-top">{{ recipe.title }}</ion-card-title>
+              <ion-card-content>
+                <ion-text> {{ recipe.descriptionPreview }} </ion-text>
+                <div class="interaction-btns">
+                  <ion-button fill="none">
+                    <ion-icon name="chatbubble-ellipses-outline" slot="start"></ion-icon>
+                    <!-- <ion-icon name="chatbubbles" slot="start"></ion-icon> -->
+                    <ion-label>0</ion-label>
+                  </ion-button>
+                  <ion-button fill="none" (click)="like(recipe.id)">
+                    <ion-icon name="heart" slot="start" *ngIf="recipe.isLiked"></ion-icon>
+                    <ion-icon name="heart-outline" slot="start" *ngIf="!recipe.isLiked"></ion-icon>
+                    <ion-label>{{ recipe.likes.length }}</ion-label>
+                  </ion-button>
                 </div>
-              </ion-item>
-            </ion-card-header>
-            <ion-img (click)="openRecipeDetail(recipe.id)" [src]="recipe.imageUrl" class="card-image">
-            </ion-img>
-            <ion-card-title class="ion-margin-horizontal ion-margin-top">{{ recipe.title }}</ion-card-title>
-            <ion-card-content>
-              <ion-text> {{ recipe.descriptionPreview }} </ion-text>
-              <div class="interaction-btns">
-                <ion-button fill="none">
-                  <ion-icon name="chatbubble-ellipses-outline" slot="start"></ion-icon>
-                  <!-- <ion-icon name="chatbubbles" slot="start"></ion-icon> -->
-                  <ion-label>0</ion-label>
-                </ion-button>
-                <ion-button fill="none" (click)="like(recipe.id)">
-                  <ion-icon name="heart" slot="start" *ngIf="recipe.isLiked"></ion-icon>
-                  <ion-icon name="heart-outline" slot="start" *ngIf="!recipe.isLiked"></ion-icon>
-                  <ion-label>{{ recipe.likes.length }}</ion-label>
-                </ion-button>
-              </div>
-            </ion-card-content>
-          </ion-card>
-        </ion-col>
-       <!-- <div *ngIf="showSpinner" class="spinner">
-          <ion-spinner name="dots"></ion-spinner>
-        </div>-->
-    </ion-row>
-  </ion-grid>
-  <ion-infinite-scroll (ionInfinite)="loadData($event)" *ngIf="length < totalRecipes">
+              </ion-card-content>
+            </ion-card>
+          </ion-col>
+         <!-- <div *ngIf="showSpinner" class="spinner">
+            <ion-spinner name="dots"></ion-spinner>
+          </div>-->
+      </ion-row>
+    </ion-grid>
+  <ion-infinite-scroll (ionInfinite)="loadMore($event)" *ngIf="length < totalRecipes">
     <ion-infinite-scroll-content
       loadingSpinner="bubbles">
     </ion-infinite-scroll-content>

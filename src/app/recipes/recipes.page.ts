@@ -51,6 +51,10 @@ export class RecipesPage implements OnInit, OnDestroy {
     await this.userProfile$.subscribe(user => {
       this.user = user;
     });
+    this.getRecipes();
+  }
+
+  getRecipes() {
     this.recipeService.getRecipes(this.user._id, this.pageNumber, this.pageSize, true);
     this.recipes = this.recipeService.recipes;
     this.recipeService.getTotalRecipes().subscribe(total => {
@@ -74,7 +78,7 @@ export class RecipesPage implements OnInit, OnDestroy {
 
   ngOnDestroy() {
   }
-  loadData(event) {
+  loadMore(event) {
     this.isLoading = true;
     setTimeout(() => {
       this.newPageSize += 1;
@@ -92,6 +96,15 @@ export class RecipesPage implements OnInit, OnDestroy {
       }
     }, 500);
     this.isLoading = false;
+  }
+
+  doRefresh(event) {
+    console.log('Begin async operation');
+    this.getRecipes();
+    setTimeout(() => {
+      console.log('Async operation has ended');
+      event.target.complete();
+    }, 2000);
   }
 
 }

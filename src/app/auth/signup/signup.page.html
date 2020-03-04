@@ -1,6 +1,6 @@
 <ion-content>
     <ion-content>
-        <ion-grid class="ion-no-padding">
+        <ion-grid >
             <ion-row>
                 <ion-col class="ion-padding-vertical ion-text-center">
                     <ion-title>SIGN UP</ion-title>
@@ -20,39 +20,39 @@
                         <ion-row>
                             <ion-col size-sm="4" offset-sm="4" class="ion-padding">
                                 <div input-field class="ion-margin">
-                                    <ion-item class="ion-no-padding">
+                                    <ion-item>
                                         <ion-label position="floating">First Name</ion-label>
                                         <ion-input type="text" clearInput formControlName="firstName">
                                         </ion-input>
                                     </ion-item>
                                     <ion-item lines="none" *ngIf="form.firstName.touched && form.firstName.errors"
-                                        class="ion-no-padding">
+                                        >
                                         <ion-text color="danger"
                                             *ngIf="form.firstName.touched && form.firstName.errors.required">
                                             First Name is
                                             required.
                                         </ion-text>
                                     </ion-item>
-                                    <ion-item class="ion-no-padding">
+                                    <ion-item>
                                         <ion-label position="floating">Last Name</ion-label>
                                         <ion-input type="text" clearInput formControlName="lastName">
                                         </ion-input>
                                     </ion-item>
                                     <ion-item lines="none" *ngIf="form.lastName.touched && form.lastName.errors"
-                                        class="ion-no-padding">
+                                        >
                                         <ion-text color="danger"
                                             *ngIf="form.lastName.touched && form.lastName.errors.required">
                                             Last Name is
                                             required.
                                         </ion-text>
                                     </ion-item>
-                                    <ion-item class="ion-no-padding">
+                                    <ion-item>
                                         <ion-label position="floating">Email</ion-label>
                                         <ion-input type="text" clearInput formControlName="email">
                                         </ion-input>
                                     </ion-item>
                                     <ion-item lines="none" *ngIf="form.email.touched && form.email.errors"
-                                        class="ion-no-padding">
+                                        >
                                         <ion-text color="danger"
                                             *ngIf="form.email.touched && form.email.errors.required">Email is
                                             required.
@@ -62,26 +62,26 @@
                                             not a valid email
                                             address.</ion-text>
                                     </ion-item>
-                                    <ion-item class="ion-no-padding">
+                                    <ion-item
                                         <ion-label position="floating">Display Name</ion-label>
                                         <ion-input type="text" clearInput formControlName="displayName">
                                         </ion-input>
                                     </ion-item>
                                     <ion-item lines="none" *ngIf="form.displayName.touched && form.displayName.errors"
-                                        class="ion-no-padding">
+                                        >
                                         <ion-text color="danger"
                                             *ngIf="form.displayName.touched && form.displayName.errors.required">Display
                                             Name is
                                             required.
                                         </ion-text>
                                     </ion-item>
-                                    <ion-item class="ion-no-padding">
+                                    <ion-item
                                         <ion-label position="floating">Password</ion-label>
                                         <ion-input type="password" formControlName="password">
                                         </ion-input>
                                     </ion-item>
                                     <ion-item lines="none" *ngIf="form.password.touched && form.password.errors"
-                                        class="ion-no-padding">
+                                        >
                                         <ion-text color="danger"
                                             *ngIf="form.password.touched && form.password.errors.required">
                                             Password is required.
@@ -92,14 +92,14 @@
                                             6 characters
                                         </ion-text>
                                     </ion-item>
-                                    <ion-item class="ion-no-padding">
+                                    <ion-item>
                                         <ion-label position="floating">Confirm Password</ion-label>
                                         <ion-input type="password" formControlName="confirmPassword">
                                         </ion-input>
                                     </ion-item>
                                     <ion-item lines="none"
                                         *ngIf="form.confirmPassword.touched && form.confirmPassword.errors"
-                                        class="ion-no-padding">
+                                        >
                                         <ion-text color="danger"
                                             *ngIf="form.confirmPassword.touched && form.confirmPassword.errors.mustMatch">
                                             Password must match
