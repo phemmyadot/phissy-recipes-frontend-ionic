@@ -5,11 +5,11 @@ Note; development s still in progress
 
 Backend Repo: https://github.com/phemmyadot/phissy-recipe-nodejs--mongodb-backend
 
-Web Demo (PWA) https://phissy-recipe-app.netlify.com/
+Web Demo: https://phissy-recipe-app.netlify.com/
 
-APK https://drive.google.com/file/d/115gA1x3q8XS2lPUFm5ga-ESBJ9XZKhwc/view?usp=sharing
+APK: https://drive.google.com/file/d/115gA1x3q8XS2lPUFm5ga-ESBJ9XZKhwc/view?usp=sharing
 
-IOS -
+IOS:
 
 
 Tasks 
