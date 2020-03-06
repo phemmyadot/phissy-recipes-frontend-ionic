@@ -7,6 +7,7 @@ import { Observable, of, Subject } from 'rxjs';
 import { Store } from '@ngxs/store';
 import { ClearUserData } from 'src/app/state/app.action';
 import { switchMap } from 'rxjs/operators';
+import * as cryptoJS from "crypto-js";
 
 @Injectable({
   providedIn: 'root'
@@ -21,10 +22,11 @@ export class AuthService {
     private store: Store) { }
 
   login(formData: any): Observable<any> {
+    const encryptedPass = cryptoJS.AES.encrypt(formData.password, environment.cryptoJS).toString()
     const graphqlQuery =
     {
       query: `{
-          login(email: "${formData.email}", password: "${formData.password}")
+          login(email: "${formData.email}", password: "${encryptedPass}")
         {
             token
             user {
@@ -84,7 +86,8 @@ export class AuthService {
   }
 
   signup(formData: any, fileData: File): Observable<any> {
-
+    const encryptedPass = cryptoJS.AES.encrypt(formData.password, environment.cryptoJS).toString()
+    const encryptedCPass = cryptoJS.AES.encrypt(formData.confirmPassword, environment.cryptoJS).toString()
     return this.upload(fileData, formData).pipe(
       switchMap(res => {
         let graphqlQuery =
@@ -96,8 +99,8 @@ export class AuthService {
               firstName: "${formData.firstName}", 
               lastName: "${formData.lastName}", 
               displayName: "${formData.displayName}", 
-              password: "${formData.password}",
-              confirmPassword: "${formData.confirmPassword}",
+              password: "${encryptedPass}",
+              confirmPassword: "${encryptedCPass}",
               imageUrl: "${res.filePath}"}){
               _id
               email
