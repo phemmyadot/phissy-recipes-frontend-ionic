@@ -38,11 +38,11 @@ export class AppComponent implements OnInit {
 
 
   ngOnInit() {
-    this.authService.isAuthenticated().subscribe(isAuth => {
-      if (!isAuth) {
-        this.router.navigateByUrl('/auth');
-      }
-    });
+    // this.authService.isAuthenticated().subscribe(isAuth => {
+    //   if (!isAuth) {
+    //     this.router.navigateByUrl('/auth');
+    //   }
+    // });
     this.user$.subscribe(user => {
       this.user = user;
     });

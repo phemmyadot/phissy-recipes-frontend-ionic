@@ -7,6 +7,14 @@ const routes: Routes = [
   {
     path: '',
     component: AuthPage
+  },
+  {
+    path: 'signup',
+    loadChildren: () => import('./signup/signup.module').then(m => m.SignupPageModule)
+  },
+  {
+    path: 'account-confirmation',
+    loadChildren: () => import('./account-confirmation/account-confirmation.module').then(m => m.AccountConfirmationPageModule)
   }
 
 ];

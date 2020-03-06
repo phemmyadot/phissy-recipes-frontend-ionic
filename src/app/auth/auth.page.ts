@@ -74,7 +74,7 @@ export class AuthPage implements OnInit {
   }
 
   routeToSignup() {
-    this.router.navigateByUrl('/signup');
+    this.router.navigateByUrl('/auth/signup');
   }
 
   forgetPassword() {
